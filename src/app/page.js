@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -6,7 +6,7 @@ export default function Home() {
 
     const directToSearch = (e) => {
         e.preventDefault();
-        router.push(`/search`);
+        router.push('/search/');
     };
 
     return (

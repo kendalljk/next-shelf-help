@@ -27,7 +27,7 @@ const bookSchema = new Schema(
             type: String,
         },
         quotes: {
-            type: String,
+            type: [String],
         },
         notes: {
             type: String,

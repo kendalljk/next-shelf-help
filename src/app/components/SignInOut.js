@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import axios from "axios";
+import Link from "next/link";
 
 const SignInOut = ({ loggedIn, setLoggedIn }) => {
     const [showForm, setShowForm] = useState(false);
@@ -77,33 +78,40 @@ const SignInOut = ({ loggedIn, setLoggedIn }) => {
                 </button>
             )}
             {showForm && (
-                <div className="absolute right-5">
+                <div className="absolute right-5 bg-white rounded border p-2">
                     <form
                         onSubmit={handleSignIn}
-                        className="p-2 flex flex-col bg-white justify-content-center rounded border"
+                        className="flex flex-col justify-content-center"
                     >
                         {error && <p className="text-danger">{error}</p>}
                         <input
                             type="text"
                             placeholder="Email"
-                            className="w-100 border focus:outline-none"
+                            className="my-1 p-1 border focus:outline-none"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <input
                             type="password"
                             placeholder="Password"
-                            className="w-100 border focus:outline-none my-1"
+                            className="my-1 p-1 border focus:outline-none my-1"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <button
                             type="submit"
-                            className="w-100 bg-blue-400 bg-opacity-75 border-2 border-slate-600 text-white"
+                            className="mt-1 p-1 bg-blue-400 bg-opacity-75 border-2 border-slate-600 text-white"
                         >
                             Log In
                         </button>
                     </form>
+                    {!loggedIn && (
+                        <div className="text-right">
+                            <Link href="/register" className="mt-0 text-blue-400 text-sm underline" onClick={()=> setShowForm(!showForm)}>
+                                Register new account
+                            </Link>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import SignInOut from "./SignInOut";
+import Menu from "./Menu";
 
 function Navigation({ setLoggedIn }) {
     const router = useRouter();
@@ -24,11 +24,16 @@ function Navigation({ setLoggedIn }) {
                         alt="books logo"
                         style={{
                             padding: "1rem 2rem",
-                            maxHeight: "5rem",
+                            maxHeight: "4rem",
                         }}
+                        className="hidden md:block"
                     />
                 </Link>
-                <h1 className="text-3xl uppercase">Shelf Help</h1>
+                <Link href="/">
+                    <h1 className="text-3xl uppercase text-slate-800">
+                        Shelf Help
+                    </h1>
+                </Link>
                 <div className="flex gap-10 ml-10 text-lg text-blue-300">
                     <Link
                         href="/"
@@ -75,7 +80,7 @@ function Navigation({ setLoggedIn }) {
                 </form>
 
                 <div className="flex">
-                    <SignInOut />
+                    <Menu />
                 </div>
             </div>
         </div>

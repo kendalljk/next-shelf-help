@@ -3,25 +3,48 @@ import Book from "@/app/models/book";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req, res) {
-    console.log("Request Body", req.body);
-    const { title, author, cover, category, review, quotes, notes, user } = await
-        req.json();
-    await connectMongoDB();
-    await Book.create({
-        title,
-        author,
-        cover,
-        category,
-        review,
-        quotes,
-        notes,
-        user,
-    });
-    return NextResponse.json({ message: "Book created" }, { status: 201 });
+    try {
+        console.log("Request Body", req.body);
+        const { title, author, cover, category, review, quotes, notes } =
+            req.body();
+        const { user } = req;
+
+        await connectMongoDB();
+        const book = await Book.create({
+            title,
+            author,
+            cover,
+            category,
+            review,
+            quotes,
+            notes,
+            user,
+        });
+
+        user.books.push(book._id);
+        await user.save();
+        return NextResponse.json({ message: "Book created" }, { status: 201 });
+    } catch (error) {
+        console.error("Error creating book:", error);
+        next(error);
+    }
 }
 
 export async function GET() {
     await connectMongoDB();
-    const books = await Book.find();
-    return NextResponse.json({ books });
+
+    try {
+        const userId = req.user._id;
+        const books = await Book.find({ user: userId });
+        if (books.length > 0) {
+            return NextResponse.json({ books });
+        } else {
+            return NextResponse.json({
+                message: "Cannot find books for the user",
+            });
+        }
+    } catch (error) {
+        console.error("Error creating book:", error);
+        next(error);
+    }
 }

@@ -65,7 +65,7 @@ const BookMenu = ({ book, addCategory }) => {
     return (
         <div className="">
             <select
-                className="book-menu px-4 fs-5 fw-normal rounded"
+                className="bg-blue-400  bg-opacity-75 py-2 px-3 text-white font-light border-2 border-slate-600 rounded"
                 value={book.category || ""}
                 onChange={handleCategoryChange}
             >

@@ -2,26 +2,24 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import SearchDisplay from "@/app/components/SearchDisplay";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const Search = ({ params }) => {
-  console.log("params", params)
-    const { query } = useParams();
+    const query = params.query;
     const router = useRouter();
     const [searchType, setSearchType] = useState("both");
-    const [inputValue, setInputValue] = useState(query || "");
+    const [inputValue, setInputValue] = useState(
+        "" || decodeURIComponent(query)
+    );
     const [searchValue, setSearchValue] = useState("");
     const [books, setBooks] = useState([]);
-
-  console.log("query:", query)
 
     useEffect(() => {
         if (query) {
             console.log(query);
-            searchForBooks(query, searchType);
-            setSearchValue(query);
+            searchForBooks(decodeURIComponent(query), searchType);
+            setSearchValue(decodeURIComponent(query));
         }
-    }, [query]);
+    }, [query, searchType]);
 
     const searchForBooks = async (searchQuery, type) => {
         setBooks([]);
@@ -62,57 +60,76 @@ const Search = ({ params }) => {
 
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages">
-            <form onSubmit={handleSubmit} className="pt-24">
-                <h1 className="my-4">Search</h1>
+            <form onSubmit={handleSubmit} className="flex flex-col w-full md:w-1/3 pt-24">
+                <h1 className="my-4 text-3xl text-slate-800">Search</h1>
                 <input
-                    className="search-input fs-4 fw-normal px-4 py-1 rounded"
+                    className="p-1 bg-blue-100 border-2 rounded-lg focus:outline-none"
                     type="search"
                     placeholder="search books..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                 />
-                <div className="d-flex my-2">
+                <div className="my-2">
                     <input
+                        className="appearance-none"
                         type="radio"
                         id="author"
                         name="search-type"
                         checked={searchType === "author"}
                         onChange={() => setSearchType("author")}
                     />
-                    <label htmlFor="author" className="px-4 fs-5 text-muted">
+                    <label
+                        htmlFor="author"
+                        className={`cursor-pointer  ${
+                            searchType === "author"
+                                ? "text-blue-300 font-semibold"
+                                : "text-gray-400"
+                        }`}
+                    >
                         author
                     </label>
                     <input
+                        className="appearance-none"
                         type="radio"
                         id="title"
                         name="search-type"
                         checked={searchType === "title"}
                         onChange={() => setSearchType("title")}
                     />
-                    <label htmlFor="title" className="px-4 fs-5 text-muted">
+                    <label
+                        htmlFor="title"
+                        className={`cursor-pointer px-4 ${
+                            searchType === "title"
+                                ? "text-blue-300 font-semibold"
+                                : "text-gray-400"
+                        }`}
+                    >
                         title
                     </label>
                     <input
+                        className="appearance-none"
                         type="radio"
                         id="both"
                         name="search-type"
                         checked={searchType === "both"}
                         onChange={() => setSearchType("both")}
                     />
-                    <label htmlFor="both" className="px-4 fs-5 text-muted">
+                    <label
+                        htmlFor="both"
+                        className={`cursor-pointer px-4 ${
+                            searchType === "both"
+                                ? "text-blue-300 font-semibold"
+                                : "text-gray-400"
+                        }`}
+                    >
                         both
                     </label>
                 </div>
-                <div className="d-flex justify-content-end">
-                    <button className="search-button">search</button>
+                <div className="flex justify-end">
+                    <button className="bg-blue-400  bg-opacity-75 py-1.5 px-3 text-white font-light border-2 border-slate-600 rounded">search</button>
                 </div>
             </form>
-            {books && (
-                <SearchDisplay
-                    books={books}
-                    searchValue={searchValue}
-                />
-            )}
+            {books && <SearchDisplay books={books} searchValue={searchValue} />}
         </section>
     );
 };
