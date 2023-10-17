@@ -1,13 +1,15 @@
 import connectMongoDB from "@/app/lib/dbConnect";
 import Book from "@/app/models/book";
 import { NextRequest, NextResponse } from "next/server";
+import { getSession } from "next-auth/react";
 
 export async function POST(req, res) {
+    const session = await getSession({ req });
     try {
         console.log("Request Body", req.body);
         const { title, author, cover, category, review, quotes, notes } =
             req.body();
-        const { user } = req;
+        const { user } = session;
 
         await connectMongoDB();
         const book = await Book.create({
@@ -18,7 +20,7 @@ export async function POST(req, res) {
             review,
             quotes,
             notes,
-            user,
+            user: user.email,
         });
 
         user.books.push(book._id);

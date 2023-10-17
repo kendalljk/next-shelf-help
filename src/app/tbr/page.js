@@ -31,7 +31,7 @@ const TBR = () => {
     const tbrBooks = books.filter((book) => book.category === "tbr");
 
     return (
-        <section className="flex min-h-screen w-full flex-col items-center bg-landing pt-24">
+        <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
             <div className="d-flex flex-column">
                 <h2 className="shelf-heading mt-5 mx-5 fst-italic fw-normal">
                     To be read...

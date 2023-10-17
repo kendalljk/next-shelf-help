@@ -11,6 +11,10 @@ module.exports = {
                 landing: "url('/landing-background.png')",
                 pages: "url('/pages-background.png')",
             },
+            fontFamily: {
+                sans: ["var(--font-mulish)"],
+                mono: ["var(--font-spaceMono)"],
+            },
         },
     },
     plugins: [],

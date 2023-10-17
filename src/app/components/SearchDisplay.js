@@ -41,7 +41,7 @@ const SearchDisplay = ({ books, searchValue }) => {
     }
 
     return (
-        <div className="w-full md:w-1/3">
+        <div className="w-2/3 md:w-1/3">
             <div className="w-full mt-4">
                 {searchValue && (
                     <h2 className="text-2xl font-medium italic text-blue-300">

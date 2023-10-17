@@ -22,7 +22,7 @@ const RegisterPage = () => {
 
     return (
         <div className="flex min-h-screen w-full flex-col items-center bg-landing pt-24">
-            <div className="flex flex-col align-items-center w-1/4">
+            <div className="flex flex-col align-items-center w-1/2 md:w-1/4">
                 {registrationSuccessful ? (
                     <div>
                         <p>
@@ -31,7 +31,7 @@ const RegisterPage = () => {
                         </p>
                     </div>
                 ) : (
-                    <div className="bg-white flex flex-col p-5 rounded-lg">
+                    <div className="bg-white flex flex-col p-5 rounded-lg border shadow">
                         <h1 className="text-slate-800 text-2xl font-semibold">
                             Register
                         </h1>

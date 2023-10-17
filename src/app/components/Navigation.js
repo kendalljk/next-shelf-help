@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Menu from "./Menu";
 
-function Navigation({ setLoggedIn }) {
+function Navigation() {
     const router = useRouter();
     const pathname = usePathname();
     const [searchValue, setSearchValue] = useState("");
@@ -22,19 +22,16 @@ function Navigation({ setLoggedIn }) {
                     <img
                         src="/logo.png"
                         alt="books logo"
-                        style={{
-                            padding: "1rem 2rem",
-                            maxHeight: "4rem",
-                        }}
-                        className="hidden md:block"
+                        width={50}
+                        className="mx-5 mt-2 hidden md:block"
                     />
                 </Link>
                 <Link href="/">
-                    <h1 className="text-3xl uppercase text-slate-800">
+                    <h1 className="text-2xl lg:text-3xl uppercase text-slate-800">
                         Shelf Help
                     </h1>
                 </Link>
-                <div className="flex gap-10 ml-10 text-lg text-blue-300">
+                <div className="flex gap-10 ml-10 text-lg text-blue-300 hidden lg:flex">
                     <Link
                         href="/"
                         className={

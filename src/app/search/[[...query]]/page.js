@@ -1,15 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import SearchDisplay from "@/app/components/SearchDisplay";
 
 const Search = ({ params }) => {
     const query = params.query;
     const router = useRouter();
     const [searchType, setSearchType] = useState("both");
-    const [inputValue, setInputValue] = useState(
-        "" || decodeURIComponent(query)
-    );
+    const [inputValue, setInputValue] = useState("");
     const [searchValue, setSearchValue] = useState("");
     const [books, setBooks] = useState([]);
 
@@ -60,7 +58,10 @@ const Search = ({ params }) => {
 
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages">
-            <form onSubmit={handleSubmit} className="flex flex-col w-full md:w-1/3 pt-24">
+            <form
+                onSubmit={handleSubmit}
+                className="flex flex-col w-2/3 md:w-1/3 pt-24"
+            >
                 <h1 className="my-4 text-3xl text-slate-800">Search</h1>
                 <input
                     className="p-1 bg-blue-100 border-2 rounded-lg focus:outline-none"
@@ -126,7 +127,9 @@ const Search = ({ params }) => {
                     </label>
                 </div>
                 <div className="flex justify-end">
-                    <button className="bg-blue-400  bg-opacity-75 py-1.5 px-3 text-white font-light border-2 border-slate-600 rounded">search</button>
+                    <button className="bg-blue-400  bg-opacity-75 py-1.5 px-3 text-white font-light border-2 border-slate-600 rounded">
+                        search
+                    </button>
                 </div>
             </form>
             {books && <SearchDisplay books={books} searchValue={searchValue} />}

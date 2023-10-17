@@ -34,7 +34,7 @@ const Shelf = () => {
     const readBooks = books.filter((book) => book.category === "read");
 
     return (
-        <section className="flex min-h-screen w-full flex-col items-center bg-landing pt-24">
+        <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
             <div className="flex flex-col">
                 <h2 className="shelf-heading mt-5 mx-5 fst-italic fw-normal">
                     Currently reading...
