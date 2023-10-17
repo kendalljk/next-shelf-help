@@ -33,7 +33,8 @@ export async function POST(req, res) {
 }
 
 export async function GET() {
-    await connectMongoDB();
+  await connectMongoDB();
+      const session = await getSession({ req });
 
     try {
         const userId = req.user._id;

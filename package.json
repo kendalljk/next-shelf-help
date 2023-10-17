@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^2.0.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "axios": "^1.5.1",
+    "bcryptjs": "^2.4.3",
     "mongodb": "^6.1.0",
     "mongoose": "^7.6.1",
     "next": "13.5.4",

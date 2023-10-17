@@ -2,7 +2,7 @@ import "./globals.css";
 import { Arya, Proza_Libre } from "next/font/google";
 import Navigation from "./components/Navigation";
 import Script from "next/script";
-import Providers from "./components/Providers";
+import {Providers} from "./components/Providers";
 
 const mulish = Arya({
     subsets: ["latin"],

@@ -4,19 +4,36 @@ import Link from "next/link";
 import axios from "axios";
 
 const RegisterPage = () => {
-    const [username, setUsername] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleRegister = async () => {
-        const user = await axios.post("http://localhost:3001/api/auth/signup", {
-            username: username,
-            password: password,
-        });
-        console.log(user);
-        if (user.status === 200) {
-            setRegistrationSuccessful(true);
+    const handleRegister = async (e) => {
+      e.preventDefault();
+
+      if (!fullName || !email || !password) {
+        setError("All fields are necessary.")
+        return
+      }
+
+        try {
+            const user = await axios.post(
+                "http://localhost:3000/api/register",
+                {
+                    fullName: fullName,
+                    email: email,
+                    password: password,
+                }
+            );
+            console.log(user);
+            if (user.status === 200) {
+                setRegistrationSuccessful(true);
+            }
+        } catch (error) {
+              setError("An error occurred during registration.");
         }
     };
 
@@ -38,9 +55,16 @@ const RegisterPage = () => {
                         <input
                             className="my-1 p-1 border"
                             type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Full Name"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                        />
+                        <input
+                            className="my-1 p-1 border"
+                            type="text"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <input
                             className="my-1 p-1 border"
@@ -61,7 +85,12 @@ const RegisterPage = () => {
                             onClick={handleRegister}
                         >
                             Register
-                        </button>
+                </button>
+                {error && (
+                  <div>
+                    <p className="text-red-500">{error}</p>
+                  </div>
+                )}
                     </div>
                 )}
             </div>

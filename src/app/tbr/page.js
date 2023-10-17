@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ShelfDisplay from "@/app/components/ShelfDisplay";
+import ShelfDisplay from "../components/ShelfDisplay";
 
 const TBR = () => {
     const [books, setBooks] = useState([]);

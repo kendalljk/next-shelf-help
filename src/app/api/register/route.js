@@ -1,42 +1,23 @@
 import dbConnect from "../../lib/dbConnect";
-import User from "../../lib/User";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import key from "../config/app.config";
+import User from "../../models/user";
+import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 
-export default async function handler(req, res) {
-    await dbConnect();
-
-  if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
-  }
-
+export async function POST(req) {
     try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return res.status(422).json({ error: "please add all the fields" });
-        }
-
-        const savedUser = await User.findOne({ email: email });
-
-        if (savedUser) {
-            return res
-                .status(422)
-                .json({ error: "user already exists with that email" });
-        }
-
-        const hashedpassword = await bcrypt.hash(password, 12);
-
-        const user = new User({
-            email,
-            password: hashedpassword,
-        });
-
-        await user.save();
-        res.status(201).send({ message: "User registered successfully" });
+        const { fullName, email, password } = await req.json();
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await dbConnect();
+        await User.create({ fullName, email, password: hashedPassword });
+        console.log("Name: ", fullName);
+        return NextResponse.json(
+            { message: "User registered." },
+            { status: 201 }
+        );
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Internal server error" });
+        return NextResponse.json(
+            { message: "An error occurred while registering the user" },
+            { status: 500 }
+        );
     }
 }

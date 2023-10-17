@@ -4,17 +4,24 @@ import { signOut, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import axios from "axios";
 import nextAuth from "next-auth";
+import { useRouter } from "next/navigation";
 
 const LoginPage = (params) => {
-    const { data: session } = useSession();
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [error, setError] = useState("");
+    const router = useRouter();
 
-  console.log(session.user)
+    const { data: session } = useSession();
 
-    if (session && session.user) {
+    if (session) {
+        console.log(session);
+    } else {
+        console.log("nobody logged in");
+    }
+
+    /* if (session && session.user) {
         return (
             <div className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
                 <p>{session.user.name}</p>
@@ -24,69 +31,42 @@ const LoginPage = (params) => {
     }
   return (
       <div className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
-          <button onClick={() => signIn()}>Sign in</button>
+          <button onClick={() => signIn()}>Sign in with Google</button>
       </div>
   );
-};
+};*/
 
-/*const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         try {
-            const response = await axios.post(
-                "http://localhost:3001/api/auth/signin",
-                {
-                    username: username,
-                    password: password,
-                }
-            );
-            console.log(response);
-            const token = response.data.token;
-            const user = response.data.username;
+            const user = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
+            });
+
+            if (user.error) {
+                setError("Invalid Credentials");
+                return;
+            }
             console.log(user);
-            localStorage.setItem("token", token);
-            localStorage.setItem("user", user);
-            setUsername(user);
-            params.setUser(user);
-
             setLoggedIn(true);
-            params.setLoggedIn(true);
-            setError("");
         } catch (error) {
-            setLoggedIn(false);
-            params.setLoggedIn(false);
-            setError("Invalid username or password");
+            console.log(error);
         }
     };
 
-    /*const signOut = () => {
-        // Clear the token from localStorage (or cookies/sessionStorage)
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        setLoggedIn(false);
-        params.setLoggedIn(false);
-        setUsername("");
-        params.setUser(null);
-        setPassword("");
+    const handleLogout = async (e) => {
+      e.preventDefault();
+      signOut();
     };
-
-    useEffect(() => {
-        // Check if a token is stored in localStorage when the component mounts
-        const storedToken = localStorage.getItem("token");
-        const user = localStorage.getItem("user");
-
-        if (storedToken) {
-            setLoggedIn(true);
-            params.setLoggedIn(true);
-            setUsername(user);
-            params.setUser(user);
-        }
-    }, []);
 
     return (
         <div className="flex min-h-screen w-full flex-col items-center bg-landing pt-24">
             <div className="flex flex-col align-items-center w-1/2 md:w-1/4">
                 {loggedIn ? (
                     <>
-                        <p>Welcome, {username}!</p>
+                        <p>Welcome, {}!</p>
                         <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (
@@ -97,9 +77,9 @@ const LoginPage = (params) => {
                         <input
                             className="my-1 p-1 border"
                             type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <input
                             className="my-1 p-1 border"
@@ -114,6 +94,11 @@ const LoginPage = (params) => {
                         >
                             Login
                         </button>
+                        {error && (
+                            <div>
+                                <p>{error}</p>
+                            </div>
+                        )}
                         <p className="text-sm text-right">
                             {`Don't have an account?`}
                             <Link
@@ -128,6 +113,6 @@ const LoginPage = (params) => {
             </div>
         </div>
     );
-};*/
+};
 
 export default LoginPage;
