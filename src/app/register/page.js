@@ -12,14 +12,23 @@ const RegisterPage = () => {
     const [error, setError] = useState("");
 
     const handleRegister = async (e) => {
-      e.preventDefault();
+        e.preventDefault();
 
-      if (!fullName || !email || !password) {
-        setError("All fields are necessary.")
-        return
-      }
+        if (!fullName || !email || !password) {
+            setError("All fields are necessary.");
+            return;
+        }
 
         try {
+            const existingUser = await axios.post(
+                "http://localhost:3000/api/user", {email}
+          );
+
+          if (existingUser) {
+            setError("User already exists.")
+            return;
+          }
+
             const user = await axios.post(
                 "http://localhost:3000/api/register",
                 {
@@ -33,7 +42,7 @@ const RegisterPage = () => {
                 setRegistrationSuccessful(true);
             }
         } catch (error) {
-              setError("An error occurred during registration.");
+            setError("An error occurred during registration.");
         }
     };
 
@@ -85,12 +94,12 @@ const RegisterPage = () => {
                             onClick={handleRegister}
                         >
                             Register
-                </button>
-                {error && (
-                  <div>
-                    <p className="text-red-500">{error}</p>
-                  </div>
-                )}
+                        </button>
+                        {error && (
+                            <div>
+                                <p className="text-red-500">{error}</p>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

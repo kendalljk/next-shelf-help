@@ -1,9 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { signOut, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import axios from "axios";
-import nextAuth from "next-auth";
 import { useRouter } from "next/navigation";
 
 const LoginPage = (params) => {
@@ -16,7 +14,7 @@ const LoginPage = (params) => {
     const { data: session } = useSession();
 
     if (session) {
-        console.log(session);
+        console.log("session", session);
     } else {
         console.log("nobody logged in");
     }
@@ -66,7 +64,7 @@ const LoginPage = (params) => {
             <div className="flex flex-col align-items-center w-1/2 md:w-1/4">
                 {loggedIn ? (
                     <>
-                        <p>Welcome, {}!</p>
+                        <p>Welcome, {session.user.fullName}!</p>
                         <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (

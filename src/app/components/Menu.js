@@ -6,25 +6,19 @@ import { signOut, signIn, useSession } from "next-auth/react";
 const Menu = () => {
     const router = useRouter();
     const { data: session } = useSession();
-  const [showForm, setShowForm] = useState(false);
-
-  if (session) {
-    console.log("Menu user", session.user)
-  } else {
-    console.log("Nobody logged in on menu")
-  }
+    const [showForm, setShowForm] = useState(false);
 
     const navToSignIn = (e) => {
         e.preventDefault();
         router.push("/login");
         setShowForm(false);
-  };
+    };
 
-  const handleSignOut = () => {
-    router.push("/login")
-    signOut();
-    setShowForm(false);
-  }
+    const handleSignOut = () => {
+        router.push("/login");
+        signOut();
+        setShowForm(false);
+    };
 
     return (
         <div>
