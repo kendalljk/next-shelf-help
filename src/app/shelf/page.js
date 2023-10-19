@@ -1,34 +1,35 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ShelfDisplay from "../components/ShelfDisplay";
+import { useSession } from "next-auth/react";
 
 const Shelf = () => {
     const [books, setBooks] = useState([]);
+    const { data: session } = useSession();
+  console.log("shelf session", session);
+  
+    if (session.user.id) {
+        const userId = session.user.id;
+    }
 
-    //console.log("shelf user", user);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (session && session.user && session.user.id) {
+                    const response = await axios.get(
+                        `http://localhost:3000/api/books`,
+                        { userId }
+                    );
+                    setBooks(response.data);
+                }
+            } catch (error) {
+                console.error("An error occurred while fetching data: ", error);
+            }
+        };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
-
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/api/books`,
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setBooks(response.data);
-      } catch (error) {
-        console.error("An error occurred while fetching data: ", error);
-      }
-    };
-
-    fetchData();
-  }, [/*user*/]);
+        fetchData();
+    }, [session]);
 
     const readingBooks = books.filter((book) => book.category === "reading");
     const readBooks = books.filter((book) => book.category === "read");

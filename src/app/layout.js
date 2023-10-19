@@ -2,7 +2,7 @@ import "./globals.css";
 import { Arya, Proza_Libre } from "next/font/google";
 import Navigation from "./components/Navigation";
 import Script from "next/script";
-import {Providers} from "./components/Providers";
+import Provider from '@/app/context/Provider'
 
 const mulish = Arya({
     subsets: ["latin"],
@@ -22,14 +22,14 @@ export const metadata = {
     description: "Created by Kendall Cercone",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
     return (
         <html lang="en">
             <body className={`${mulish.variable} ${spaceMono.variable}`}>
-                <Providers>
+                <Provider>
                     <Navigation />
                     {children}
-                </Providers>
+                </Provider>
             </body>
             <Script
                 src="https://kit.fontawesome.com/26908105cc.js"

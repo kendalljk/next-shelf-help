@@ -1,5 +1,5 @@
-import connectMongoDB from "../../../lib/dbConnect";
-import User from "../../../models/user";
+import connectMongoDB from "@/app/lib/dbConnect";
+import User from "@/app/models/user";
 import nextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
@@ -8,45 +8,45 @@ const authOptions = {
     providers: [
         Credentials({
             name: "credentials",
-            credentials: {},
-            async authorize(credentials) {
+            credentials: {
+                email: {
+                    label: "Email",
+                    type: "text",
+                    placeholder: "Email",
+                },
+                password: { label: "Password", type: "password" },
+            },
+            async authorize(credentials, req) {
                 const { email, password } = credentials;
-                try {
-                    await connectMongoDB();
-                    const user = await User.findOne({ email });
-                    console.log("user", user);
 
-                    if (!user) {
-                        return null;
-                    }
-
-                    const passwordMatch = await bcrypt.compare(
-                        password,
-                        user.password
-                    );
-
-                    if (!passwordMatch) {
-                        return null;
-                    }
-
-                    return user;
-                } catch (error) {
-                    console.log("Error:", error);
+                if (!email || !password) {
+                    return null;
                 }
+
+                await connectMongoDB();
+                const user = await User.findOne({ email });
+                //console.log("user", user);
+
+                if (!user) {
+                    return null;
+                }
+
+                const passwordMatch = await bcrypt.compare(
+                    password,
+                    user.password
+                );
+
+                if (!passwordMatch) {
+                    return null;
+                }
+
+                return user;
             },
         }),
     ],
-    session: {
-        async getSession(session, user) {
-            if (user) {
-                session.user = user;
-            }
-            return session;
-        },
-    },
     callbacks: {
         async jwt({ token, user, session }) {
-            console.log("jwt callback", { token, user, session });
+        //console.log("jwt callback", { token, user, session });
 
             if (user) {
                 return {
@@ -58,7 +58,7 @@ const authOptions = {
             return token;
         },
         async session({ session, token, user }) {
-            console.log("session callback", { session, token, user });
+            //console.log("session callback", { session, token, user });
             return {
                 ...session,
                 user: {
@@ -71,6 +71,9 @@ const authOptions = {
         },
     },
     secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+    },
     pages: {
         signIn: "/",
     },

@@ -19,21 +19,6 @@ const LoginPage = (params) => {
         console.log("nobody logged in");
     }
 
-    /* if (session && session.user) {
-        return (
-            <div className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
-                <p>{session.user.name}</p>
-                <button onClick={() => signOut()}>Sign out</button>
-            </div>
-        )
-    }
-  return (
-      <div className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
-          <button onClick={() => signIn()}>Sign in with Google</button>
-      </div>
-  );
-};*/
-
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -47,7 +32,7 @@ const LoginPage = (params) => {
                 setError("Invalid Credentials");
                 return;
             }
-            console.log(user);
+            router.push("/shelf");
             setLoggedIn(true);
         } catch (error) {
             console.log(error);
@@ -55,8 +40,8 @@ const LoginPage = (params) => {
     };
 
     const handleLogout = async (e) => {
-      e.preventDefault();
-      signOut();
+        e.preventDefault();
+        signOut();
     };
 
     return (

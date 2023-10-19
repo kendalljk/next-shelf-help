@@ -2,28 +2,23 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter, usePathname } from "next/navigation";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const BookInfo = () => {
     const { title } = useParams();
     const router = useRouter();
     const pathname = usePathname();
     const [book, setBook] = useState({});
-    const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { data: session } = useSession();
+  console.log(session)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const encodedTitle = encodeURIComponent(title);
-
-                const token = localStorage.getItem("token");
-
                 const response = await axios.get(
-                    `http://localhost:3001/api/books/${encodedTitle}`,
-                    {
-                        headers: {
-                            authorization: `Bearer ${token}`,
-                        },
-                    }
+                    `http://localhost:3001/api/books/${encodedTitle}`
                 );
                 setBook(response.data);
             } catch (error) {
@@ -35,18 +30,11 @@ const BookInfo = () => {
     }, []);
 
     const handleEdit = async () => {
-        const token = localStorage.getItem("token");
-
         if (isEditing) {
             try {
                 await axios.put(
                     `http://localhost:3001/api/books/${title}`,
                     book,
-                    {
-                        headers: {
-                            authorization: `Bearer ${token}`,
-                        },
-                    }
                 );
                 alert("Success!");
                 router.push("/shelf");
@@ -65,16 +53,10 @@ const BookInfo = () => {
 
     const deleteNote = async (event) => {
         event.preventDefault();
-        const token = localStorage.getItem("token");
 
         try {
             const response = await axios.delete(
-                `http://localhost:3001/api/books/${title}`,
-                {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                    },
-                }
+                `http://localhost:3001/api/books/${title}`
             );
             if (response.status === 204) {
                 console.log("Book deleted book.");

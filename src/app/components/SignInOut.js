@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import axios from "axios";
@@ -118,4 +118,4 @@ const SignInOut = ({ loggedIn, setLoggedIn }) => {
     );
 };
 
-export default SignInOut;
+export default SignInOut;*/

@@ -1,12 +1,14 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const BookMenu = ({ book, addCategory }) => {
     const pathname = usePathname();
-    const router= useRouter();
-    const [displayValue, setDisplayValue] = useState("Update Status");
+    const router = useRouter();
+    const { data: session } = useSession();
+  const [displayValue, setDisplayValue] = useState("Update Status");
 
     useEffect(() => {
         if (pathname.startsWith("/search/")) {
@@ -17,28 +19,26 @@ const BookMenu = ({ book, addCategory }) => {
     }, [pathname]);
 
     const handleCategoryChange = async (e) => {
-        const newCategory = e.target.value;
+      const newCategory = e.target.value;
+      console.log("new category: ", newCategory)
         let newBook = {
             author: book.author,
             title: book.title,
             cover: book.coverI || book.cover,
             category: newCategory,
+            user: session.user.id,
         };
 
-        console.log(newBook);
-        const token = localStorage.getItem("token");
-        console.log("token", token);
+        console.log("new book", newBook);
 
-        if (pathname.startsWith("/search")) {
-            try {
+      if (pathname.startsWith("/search")) {
+        console.log(
+            "start searching"
+          )
+          try {
                 const response = await axios.post(
-                    "http://localhost:3001/api/books",
-                    newBook,
-                    {
-                        headers: {
-                            authorization: `Bearer ${token}`,
-                        },
-                    }
+                    "http://localhost:3000/api/books",
+                    newBook
                 );
                 if (response.status === 201) {
                     console.log("Book successfully saved to MongoDB.");

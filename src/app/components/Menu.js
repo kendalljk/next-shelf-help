@@ -8,6 +8,8 @@ const Menu = () => {
     const { data: session } = useSession();
     const [showForm, setShowForm] = useState(false);
 
+    session && console.log(session);
+
     const navToSignIn = (e) => {
         e.preventDefault();
         router.push("/login");
@@ -33,6 +35,11 @@ const Menu = () => {
                     onClick={() => setShowForm(!showForm)}
                     className="w-1/3 lg:w-1/6 absolute right-5 bg-white rounded flex flex-col align-end border shadow p-2"
                 >
+                    {session?.user && (
+                        <div className="text-right text-blue-400 text-xl">
+                            <h2>{session.user.fullName}</h2>
+                        </div>
+                    )}
                     <Link
                         href="/search"
                         className="text-right hover:bg-blue-100 p-1"
@@ -53,7 +60,7 @@ const Menu = () => {
                     </Link>
                     {session && session.user ? (
                         <button
-                            className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                            className="flex w-full bg-blue-400 justify-center  bg-opacity-75 my-1 py-1.5 px-3 text-white font-light border-2 border-slate-600 rounded"
                             onClick={handleSignOut}
                         >
                             Sign Out

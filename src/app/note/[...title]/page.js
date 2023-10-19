@@ -3,7 +3,7 @@ import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import BookMenu from "@/app/components/BookMenu";
 
-const NotePage = ({params}) => {
+const NotePage = ({ params }) => {
     const pathname = usePathname();
     const router = useRouter();
     const book = location.state?.book;
@@ -27,14 +27,12 @@ const NotePage = ({params}) => {
 
     const saveNote = async (event) => {
         event.preventDefault();
-        const token = localStorage.getItem("token");
 
         try {
             const checkDuplicates = await axios.get(
                 `http://localhost:3001/api/books/${encodeURIComponent(
                     myNote.title
-                )}`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                )}`
             );
 
             if (checkDuplicates.data) {
@@ -54,8 +52,7 @@ const NotePage = ({params}) => {
                         `http://localhost:3001/api/books/${encodeURIComponent(
                             myNote.title
                         )}`,
-                        myNote,
-                        { headers: { Authorization: `Bearer ${token}` } }
+                        myNote
                     );
                     if (updateResponse.status === 200) {
                         console.log("Book successfully updated in MongoDB.");
@@ -69,8 +66,7 @@ const NotePage = ({params}) => {
 
             const response = await axios.post(
                 "http://localhost:3001/api/books",
-                myNote,
-                { headers: { Authorization: `Bearer ${token}` } }
+                myNote
             );
 
             if (response.status === 201) {
@@ -86,13 +82,11 @@ const NotePage = ({params}) => {
 
     const deleteNote = async (event) => {
         event.preventDefault();
-        const token = localStorage.getItem("token");
         try {
             const response = await axios.delete(
                 `http://localhost:3001/api/books/${encodeURIComponent(
                     myNote.title
-                )}`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                )}`
             );
             if (response.status === 204) {
                 console.log("Book deleted book.");

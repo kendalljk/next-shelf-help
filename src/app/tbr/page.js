@@ -1,25 +1,24 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ShelfDisplay from "../components/ShelfDisplay";
+import { useSession } from "next-auth/react";
+
 
 const TBR = () => {
-    const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState([]);
+      const { data: session } = useSession();
+      console.log("tbr session", session);
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem("token");
-
             try {
-                const response = await axios.get(
-                    "http://localhost:3001/api/books",
-                    {
-                        headers: {
-                            authorization: `Bearer ${token}`,
-                        },
+                    if (session && session.user && session.user.id) {
+                        const url = `http://localhost:3000/api/books?userId=${session.user.id}`;
+                        console.log("Requesting URL:", url);
+                        const response = await axios.get(url);
+                        setBooks(response.data);
                     }
-                );
-                setBooks(response.data);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);
             }

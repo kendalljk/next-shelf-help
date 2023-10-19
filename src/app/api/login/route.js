@@ -1,5 +1,5 @@
-import dbConnect from "../../lib/dbConnect";
-import User from "../../lib/User";
+import dbConnect from "@/app/lib/dbConnect";
+import User from "@/app/models/user";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import key from "../config/app.config";

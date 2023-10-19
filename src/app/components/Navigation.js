@@ -2,12 +2,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Menu from "./Menu";
 
 function Navigation() {
     const router = useRouter();
-    const pathname = usePathname();
-    const [searchValue, setSearchValue] = useState("");
+  const pathname = usePathname();
+  const { data: session } = useSession();
+  const [searchValue, setSearchValue] = useState("");
+
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -43,7 +46,7 @@ function Navigation() {
                         home
                     </Link>
                     <Link
-                        href="/shelf"
+                        href="/shelf/"
                         className={
                             pathname === "/shelf"
                                 ? "underline underline-offset-4"
