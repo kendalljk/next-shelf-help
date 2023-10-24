@@ -9,9 +9,9 @@ const ShelfDisplay = ({ book }) => {
     const directToNote = () => {
         const { category, title } = book;
         if (category === "tbr" || category === "reading") {
-            router.push(`/note/${book.title}`, { state: { book } });
+            router.push(`/note/${book.title}`);
         } else if (category === "read") {
-            router.push(`/book/${book.title}`);
+            router.push(`/info/${book.title}`);
         } else {
             alert("Error");
         }

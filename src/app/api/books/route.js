@@ -1,6 +1,7 @@
 import connectMongoDB from "@/app/lib/dbConnect";
 import Book from "@/app/models/book";
 import User from "@/app/models/user";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req, res) {
@@ -48,10 +49,11 @@ export async function POST(req, res) {
 }
 
 export async function GET(req, res) {
-
+  const token = await getToken({req});
+  console.log("token: ", token)
   await connectMongoDB();
-  const userId = await req.json();
-  console.log(userId)
+
+  const userId = token.id;
 
       if (!userId) {
           return NextResponse.json(
@@ -60,7 +62,8 @@ export async function GET(req, res) {
           );
       }
 
-    const user = await User.findOne({ _id: userId });
+  const user = await User.findOne({ _id: userId });
+  console.log("DB user: ", user)
     if (!user) {
         return NextResponse.json(
             { message: "User not found" },
@@ -70,7 +73,7 @@ export async function GET(req, res) {
 
     try {
         console.log("User Id:", userId);
-        const books = await Book.find({ user: userId });
+        const books = await Book.find({ title, user: userId });
         if (books.length > 0) {
             return NextResponse.json({ books });
         } else {
@@ -85,3 +88,52 @@ export async function GET(req, res) {
         );
     }
 }
+
+/*
+bookRouter.put("/:title", requireAuth, async (req, res) => {
+    const { title } = req.params;
+    const userId = req.user._id;
+    const updatedData = req.body;
+
+    try {
+        const book = await Book.findOneAndUpdate(
+            { title: decodeURIComponent(title), user: userId },
+            updatedData,
+            { new: true }
+        );
+        if (book) {
+            res.status(200).json(book);
+        } else {
+            return res.status(404).json({ message: "Book not found" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while updating the book",
+        });
+    }
+});
+
+bookRouter.delete("/:title", requireAuth, async (req, res) => {
+    const { title } = req.params;
+    const userId = req.user._id;
+    try {
+        const book = await Book.findOneAndDelete({
+            title: decodeURIComponent(title),
+            user: userId,
+        });
+
+        if (!book) {
+            return res.status(404).json({ message: "Book not found" });
+        }
+
+        res.status(204).json({ message: "Book successfully deleted" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while deleting the book",
+        });
+    }
+});
+
+*/

@@ -1,14 +1,27 @@
+"use client";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import BookMenu from "@/app/components/BookMenu";
 
 const NotePage = ({ params }) => {
+  console.log("params: ", params);
     const pathname = usePathname();
     const router = useRouter();
     const book = location.state?.book;
     const [myNote, setMyNote] = useState({ ...book });
     console.log("My Note", myNote);
+
+    const searchBook = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/api/books?title=${params}`);
+            setBooks(response.data.books);
+        } catch (error) {
+            console.error("An error occurred while fetching data: ", error);
+        }
+    };
+
+    searchBook();
 
     const addToNote = (event) => {
         const { name, value } = event.target;

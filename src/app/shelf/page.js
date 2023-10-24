@@ -7,29 +7,23 @@ import { useSession } from "next-auth/react";
 const Shelf = () => {
     const [books, setBooks] = useState([]);
     const { data: session } = useSession();
-  console.log("shelf session", session);
-  
-    if (session.user.id) {
-        const userId = session.user.id;
-    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (session && session.user && session.user.id) {
-                    const response = await axios.get(
-                        `http://localhost:3000/api/books`,
-                        { userId }
-                    );
-                    setBooks(response.data);
-                }
+                const response = await axios.get(
+                    `http://localhost:3000/api/books`
+                );
+                console.log("response: ", response);
+                setBooks(response.data.books);
+                console.log("books returned: ", books);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);
             }
         };
 
         fetchData();
-    }, [session]);
+    }, []);
 
     const readingBooks = books.filter((book) => book.category === "reading");
     const readBooks = books.filter((book) => book.category === "read");
