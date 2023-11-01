@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 const TBR = () => {
     const [books, setBooks] = useState([]);
     const { data: session } = useSession();
-    console.log("tbr session", session);
 
     useEffect(() => {
         const fetchData = async () => {

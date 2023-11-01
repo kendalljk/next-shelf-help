@@ -8,8 +8,6 @@ const Menu = () => {
     const { data: session } = useSession();
     const [showForm, setShowForm] = useState(false);
 
-    session && console.log(session);
-
     const navToSignIn = (e) => {
         e.preventDefault();
         router.push("/login");
@@ -17,8 +15,7 @@ const Menu = () => {
     };
 
     const handleSignOut = () => {
-        router.push("/login");
-        signOut();
+        signOut({ callbackUrl: "/login" });
         setShowForm(false);
     };
 

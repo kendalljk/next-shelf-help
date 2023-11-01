@@ -43,9 +43,7 @@ const BookMenu = ({ book, addCategory }) => {
                 if (response.status === 201) {
                     console.log("Book successfully saved to MongoDB.");
                     if (newCategory === "read") {
-                        router.push(`/note/${book.title}`, {
-                            state: { book: newBook },
-                        });
+                        router.push(`/note/${book.title}`);
                     } else if (newCategory === "reading") {
                         router.push("/shelf");
                     } else if (newCategory === "tbr") {

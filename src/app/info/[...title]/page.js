@@ -1,26 +1,25 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter, usePathname } from "next/navigation";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-const BookInfo = () => {
-    const { title } = useParams();
+const BookInfo = ({ params }) => {
+    const title = decodeURIComponent(params.title[0]);
     const router = useRouter();
     const pathname = usePathname();
     const [book, setBook] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
-  const { data: session } = useSession();
-  console.log(session)
+    const [isEditing, setIsEditing] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const encodedTitle = encodeURIComponent(title);
                 const response = await axios.get(
-                    `http://localhost:3001/api/books/${encodedTitle}`
-                );
-                setBook(response.data);
+                    `http://localhost:3000/api/books?title=${title}`
+              );
+              console.log("response: ", response)
+                setBook(response.data.books);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);
             }
@@ -33,8 +32,10 @@ const BookInfo = () => {
         if (isEditing) {
             try {
                 await axios.put(
-                    `http://localhost:3001/api/books/${title}`,
-                    book,
+                    `http://localhost:3000/api/books?title=${encodeURIComponent(
+                        title
+                    )}`,
+                    book
                 );
                 alert("Success!");
                 router.push("/shelf");
@@ -51,15 +52,20 @@ const BookInfo = () => {
         console.log("Updated Book:", book);
     };
 
-    const deleteNote = async (event) => {
+  const deleteNote = async (event) => {
+      console.log("deleting...")
         event.preventDefault();
 
-        try {
+    try {
+          console.log("title for deletion: ", title)
             const response = await axios.delete(
-                `http://localhost:3001/api/books/${title}`
-            );
-            if (response.status === 204) {
-                console.log("Book deleted book.");
+                `http://localhost:3000/api/books?title=${encodeURIComponent(
+                  title
+                )}`
+      );
+      console.log("response: ", response)
+            if (response.status === 200) {
+                console.log("Book deleted.");
                 if (book.category === "tbr") {
                     router.push("/tbr");
                 } else {
@@ -82,81 +88,87 @@ const BookInfo = () => {
     };
 
     return (
-        <section className="display note-page d-flex flex-md-row flex-sm-column justify-content-center w-75 mx-auto mt-5">
-            <div className="col-md-6 col-12 d-flex justify-content-center">
-                <img
-                    className="note-cover w-auto"
-                    src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
-                    alt={`${book.title} cover`}
-                />
+        <section className="flex min-h-screen w-full justify-center gap-20 bg-pages pt-24">
+            <div className="w-full lg:w-3/4 flex flex-col lg:flex-row lg:justify-center gap-10 max-h-screen">
+                <div className="w-full flex lg:w-1/2  justify-center">
+                    <img
+                        className="w-1/2 lg:w-4/5 h-fit"
+                        src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
+                        alt={`${book.title} book cover`}
+                    />
+                </div>
+                <form className="relative flex flex-col  w-3/4  mx-auto lg:w-1/2">
+                    <h2 className="text-3xl italic">{book.title}</h2>
+                    <p className="text-lg">by {book.author}</p>
+                    <i
+                        onClick={exitNote}
+                        className="fa fa-times text-slate-700 text-xl py-1 border-2 hover:text-black  bg-slate-300
+
+                        active:bg-slate-200
+                        active:border-2 active:border-slate-400
+                        rounded-full px-2 absolute top-0 end-0 m-2"
+                        aria-hidden="true"
+                    ></i>
+                    <div className="flex flex-col">
+                        <label htmlFor="review" className="text-xl">
+                            review:
+                        </label>
+                        <textarea
+                            value={book.review}
+                            onChange={handleChange}
+                            className="rounded border p-2"
+                            name="review"
+                            id="review"
+                            rows="3"
+                            readOnly={!isEditing}
+                        ></textarea>
+                    </div>
+                    <div className="flex flex-col">
+                        <label htmlFor="quotes" className="text-xl">
+                            quotes:
+                        </label>
+                        <textarea
+                            value={book.quotes}
+                            onChange={handleChange}
+                            className="rounded border p-2"
+                            name="quotes"
+                            id="quotes"
+                            rows="5"
+                            readOnly={!isEditing}
+                        ></textarea>
+                    </div>
+                    <div className="flex flex-col">
+                        <label htmlFor="notes" className="text-xl">
+                            notes:
+                        </label>
+                        <textarea
+                            value={book.notes}
+                            onChange={handleChange}
+                            className="rounded border p-2"
+                            name="notes"
+                            id="notes"
+                            rows="5"
+                            readOnly={!isEditing}
+                        ></textarea>
+                    </div>
+                    <div className="flex justify-end my-5">
+                        <button
+                            type="button"
+                            onClick={deleteNote}
+                            className="mx-5 bg-red-400 text-white border-2 border-black p-2 rounded font-bold"
+                        >
+                            delete
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleEdit}
+                            className="border-2 border-black p-2 font-bold bg-green-700 text-white rounded"
+                        >
+                            {isEditing ? "update" : "edit"}
+                        </button>
+                    </div>
+                </form>
             </div>
-            <form className="col-md-6 col-12 position-relative">
-                <h2 className="fst-italic">{book.title}</h2>
-                <p className="fs-4 fw-medium">by {book.author}</p>
-                <i
-                    onClick={exitNote}
-                    className="fa fa-times hover position-absolute top-0 end-0  fs-3 m-2"
-                    aria-hidden="true"
-                ></i>
-                <div className="d-flex flex-column">
-                    <label htmlFor="review" className="fs-4 fw-medium">
-                        review:
-                    </label>
-                    <textarea
-                        value={book.review}
-                        onChange={handleChange}
-                        className="rounded border-0 p-2"
-                        name="review"
-                        id="review"
-                        rows="3"
-                        readOnly={!isEditing}
-                    ></textarea>
-                </div>
-                <div className="d-flex flex-column">
-                    <label htmlFor="quotes" className="fs-4 fw-medium">
-                        quotes:
-                    </label>
-                    <textarea
-                        value={book.quotes}
-                        onChange={handleChange}
-                        className="rounded border-0 p-2"
-                        name="quotes"
-                        id="quotes"
-                        rows="5"
-                        readOnly={!isEditing}
-                    ></textarea>
-                </div>
-                <div className="d-flex flex-column">
-                    <label htmlFor="notes" className="fs-4 fw-medium">
-                        notes:
-                    </label>
-                    <textarea
-                        value={book.notes}
-                        onChange={handleChange}
-                        className="rounded border-0 p-2"
-                        name="notes"
-                        id="notes"
-                        rows="5"
-                        readOnly={!isEditing}
-                    ></textarea>
-                </div>
-                <div className="d-flex justify-content-end mt-5">
-                    <button
-                        type="button"
-                        onClick={deleteNote}
-                        className="note-button mx-5 bg-danger-subtle text-danger font-bold"
-                    >
-                        delete
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handleEdit}
-                        className="note-button"
-                    >
-                        {isEditing ? "update" : "edit"}
-                    </button>
-                </div>
-            </form>
         </section>
     );
 };

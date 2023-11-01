@@ -48,22 +48,22 @@ export async function POST(req, res) {
     }
 }
 
-/*export async function GET(req, res) {
-  const token = await getToken({req});
-  console.log("token: ", token)
-  await connectMongoDB();
+export async function GET(req, res) {
+    const searchParams = req.nextUrl.searchParams;
+    const title = searchParams.get("title");
+    const token = await getToken({ req });
+    await connectMongoDB();
 
-  const userId = token.id;
+    const userId = token.id;
 
-      if (!userId) {
-          return NextResponse.json(
-              { message: "User ID not provided" },
-              { status: 400 }
-          );
-      }
+    if (!userId) {
+        return NextResponse.json(
+            { message: "User ID not provided" },
+            { status: 404 }
+        );
+    }
 
-  const user = await User.findOne({ _id: userId });
-  console.log("DB user: ", user)
+    const user = await User.findOne({ _id: userId });
     if (!user) {
         return NextResponse.json(
             { message: "User not found" },
@@ -72,54 +72,14 @@ export async function POST(req, res) {
     }
 
     try {
-        console.log("User Id:", userId);
-        const books = await Book.find({ user: userId });
-        if (books.length > 0) {
-            return NextResponse.json({ books });
-        } else {
-            return NextResponse.json({
-                message: "Cannot find books for the user",
-            });
-        }
-    } catch (error) {
-        return NextResponse.json(
-            { message: "An error occurred while finding books for the user" },
-            { status: 500 }
-        );
-    }*/
-
-export async function GET(req, res) {
-    const searchParams = req.nextUrl.searchParams;
-    const title = searchParams.get("title");
-    const token = await getToken({ req });
-    console.log("token: ", token);
-    await connectMongoDB();
-
-    const userId = token.id;
-
-    if (!userId) {
-        return res.status(400).json({ message: "User ID not provided" });
-    }
-
-    const user = await User.findOne({ _id: userId });
-    console.log("DB user: ", user);
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-  }
-
-    try {
-        console.log("User Id:", userId, "title: ", title);
         let books;
         if (title) {
-          books = await Book.find({ user: userId, title: title });
-          console.log("book by title: ", books)
+            books = await Book.findOne({ user: userId, title: title });
         } else {
-            console.log("searching by ID only");
             books = await Book.find({ user: userId });
-            console.log("userId books: ", books);
         }
 
-        if (books.length > 0) {
+        if (books) {
             return NextResponse.json({ books });
         } else {
             return NextResponse.json({
@@ -134,51 +94,110 @@ export async function GET(req, res) {
     }
 }
 
-/*
-bookRouter.put("/:title", requireAuth, async (req, res) => {
-    const { title } = req.params;
-    const userId = req.user._id;
-    const updatedData = req.body;
+export async function PUT(req, res) {
+    const searchParams = req.nextUrl.searchParams;
+    const title = searchParams.get("title");
+    const token = await getToken({ req });
+    await connectMongoDB();
 
-    try {
+    const userId = token.id;
+
+    if (!userId) {
+        return NextResponse.json(
+            { message: "User Id not provided" },
+            { status: 404 }
+        );
+    }
+
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        return NextResponse.json(
+            { message: "User not found" },
+            { status: 404 }
+        );
+    }
+
+
+
+  try {
+        const { category, notes, quotes, review } = await req.json();
+        console.log("req received: ", category, notes, quotes, review);
+
+        const bookUpdates = {
+            category,
+            notes,
+            quotes,
+            review,
+        };
+
         const book = await Book.findOneAndUpdate(
             { title: decodeURIComponent(title), user: userId },
-            updatedData,
+            bookUpdates,
             { new: true }
         );
         if (book) {
-            res.status(200).json(book);
+            return NextResponse.json({ book });
         } else {
-            return res.status(404).json({ message: "Book not found" });
+            return NextResponse.json(
+                { message: "Book not found" },
+                { status: 404 }
+            );
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            message: "An error occurred while updating the book",
-        });
+        return NextResponse.json(
+            { message: "An error occurred while updating the book" },
+            { status: 500 }
+        );
     }
-});
+}
 
-bookRouter.delete("/:title", requireAuth, async (req, res) => {
-    const { title } = req.params;
-    const userId = req.user._id;
+export async function DELETE(req, res) {
+    const searchParams = req.nextUrl.searchParams;
+    const title = searchParams.get("title");
+    const token = await getToken({ req });
+    await connectMongoDB();
+
+    const userId = token.id;
+
+    if (!userId) {
+        return NextResponse.json(
+            { message: "User Id not provided" },
+            { status: 404 }
+        );
+    }
+
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        return NextResponse.json(
+            { message: "User not found" },
+            { status: 404 }
+        );
+    }
     try {
         const book = await Book.findOneAndDelete({
             title: decodeURIComponent(title),
             user: userId,
         });
 
-        if (!book) {
-            return res.status(404).json({ message: "Book not found" });
-        }
+      console.log("book: ", book)
 
-        res.status(204).json({ message: "Book successfully deleted" });
+        if (!book) {
+            return NextResponse.json(
+                { message: "Book not found" },
+                { status: 404 }
+            );
+        } else {
+
+        return NextResponse.json(
+            { message: "Book successfully deleted" },
+            { status: 200 }
+        );}
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            message: "An error occurred while deleting the book",
-        });
+        return NextResponse.json(
+            { message: "An error occurred while deleting the book" },
+            { status: 500 }
+        );
     }
-});
-
-*/
+}
