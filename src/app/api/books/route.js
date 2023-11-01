@@ -48,7 +48,7 @@ export async function POST(req, res) {
     }
 }
 
-export async function GET(req, res) {
+/*export async function GET(req, res) {
   const token = await getToken({req});
   console.log("token: ", token)
   await connectMongoDB();
@@ -73,7 +73,52 @@ export async function GET(req, res) {
 
     try {
         console.log("User Id:", userId);
-        const books = await Book.find({ title, user: userId });
+        const books = await Book.find({ user: userId });
+        if (books.length > 0) {
+            return NextResponse.json({ books });
+        } else {
+            return NextResponse.json({
+                message: "Cannot find books for the user",
+            });
+        }
+    } catch (error) {
+        return NextResponse.json(
+            { message: "An error occurred while finding books for the user" },
+            { status: 500 }
+        );
+    }*/
+
+export async function GET(req, res) {
+    const searchParams = req.nextUrl.searchParams;
+    const title = searchParams.get("title");
+    const token = await getToken({ req });
+    console.log("token: ", token);
+    await connectMongoDB();
+
+    const userId = token.id;
+
+    if (!userId) {
+        return res.status(400).json({ message: "User ID not provided" });
+    }
+
+    const user = await User.findOne({ _id: userId });
+    console.log("DB user: ", user);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+  }
+
+    try {
+        console.log("User Id:", userId, "title: ", title);
+        let books;
+        if (title) {
+          books = await Book.find({ user: userId, title: title });
+          console.log("book by title: ", books)
+        } else {
+            console.log("searching by ID only");
+            books = await Book.find({ user: userId });
+            console.log("userId books: ", books);
+        }
+
         if (books.length > 0) {
             return NextResponse.json({ books });
         } else {

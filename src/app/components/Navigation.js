@@ -35,6 +35,8 @@ function Navigation() {
                     </h1>
                 </Link>
                 <div className="flex gap-10 ml-10 text-lg text-blue-300 hidden lg:flex">
+                  {session && session.user &&
+                    <>
                     <Link
                         href="/"
                         className={
@@ -44,7 +46,8 @@ function Navigation() {
                         }
                     >
                         home
-                    </Link>
+            </Link>
+
                     <Link
                         href="/shelf/"
                         className={
@@ -65,6 +68,8 @@ function Navigation() {
                     >
                         tbr
                     </Link>
+              </>
+}
                 </div>
             </div>
 

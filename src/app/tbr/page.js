@@ -28,16 +28,13 @@ const TBR = () => {
 
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
-            <div className="d-flex flex-column">
-                <h2 className="shelf-heading mt-5 mx-5 fst-italic fw-normal">
+            <div className="flex flex-col w-full">
+                <h2 className="text-2xl italic text-blue-300 m-5">
                     To be read...
                 </h2>
-                <div className="reading mt-2 d-flex flex-wrap">
+                <div className="flex flex-wrap w-full">
                     {tbrBooks.map((book, i) => (
-                        <div
-                            key={i}
-                            className="text-center d-flex  flex-column align-items-center col-sm-2 col-lg-1 mx-5 mt-3"
-                        >
+                        <div key={i} className="w-1/12 mx-5">
                             <ShelfDisplay book={book} />
                         </div>
                     ))}

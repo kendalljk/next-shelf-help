@@ -1,27 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import BookMenu from "@/app/components/BookMenu";
 
 const NotePage = ({ params }) => {
-  console.log("params: ", params);
+    const title = decodeURIComponent(params.title[0]);
+    console.log("title: ", title);
     const pathname = usePathname();
     const router = useRouter();
-    const book = location.state?.book;
-    const [myNote, setMyNote] = useState({ ...book });
+    const [book, setBook] = useState({});
+    const [myNote, setMyNote] = useState("");
     console.log("My Note", myNote);
 
-    const searchBook = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3000/api/books?title=${params}`);
-            setBooks(response.data.books);
-        } catch (error) {
-            console.error("An error occurred while fetching data: ", error);
-        }
-    };
+    useEffect(() => {
+        const searchBook = async (title) => {
+            try {
+                console.log("Searching for book by title: ", title);
+                const response = await axios.get(
+                    `http://localhost:3000/api/books?title=${title}`
+                );
+                console.log("repsonse: ", response);
+                setBook(response.data.books[0]);
 
-    searchBook();
+                console.log("returned books by title: ", book);
+            } catch (error) {
+                console.error("An error occurred while fetching data: ", error);
+            }
+        };
+
+        searchBook(title);
+    }, []);
 
     const addToNote = (event) => {
         const { name, value } = event.target;
@@ -90,7 +99,7 @@ const NotePage = ({ params }) => {
         } catch (error) {
             console.error("An error occurred:", error);
         }
-        navigate("/shelf");
+        router.push("/shelf");
     };
 
     const deleteNote = async (event) => {
@@ -104,9 +113,9 @@ const NotePage = ({ params }) => {
             if (response.status === 204) {
                 console.log("Book deleted book.");
                 if (book.category === "tbr") {
-                    navigate("/tbr");
+                    router.push("/tbr");
                 } else {
-                    navigate("/shelf");
+                    router.push("/shelf");
                 }
             } else {
                 console.log("Failed to delete the book.");
@@ -118,77 +127,77 @@ const NotePage = ({ params }) => {
 
     const exitNote = () => {
         if (book.category === "tbr") {
-            navigate("/tbr");
+            router.push("/tbr");
         } else {
-            navigate("/shelf");
+            router.push("/shelf");
         }
     };
 
     return (
-        <section className="display note-page d-flex flex-md-row flex-sm-column justify-content-center w-75 mx-auto mt-5">
-            <div className="col-md-6 col-12 d-flex justify-content-center">
+        <section className="flex min-h-screen w-full justify-center gap-20 bg-pages pt-24">
+            <div className="w-1/2 flex justify-center">
                 <img
-                    className="note-cover w-auto"
+                    className="w-2/3"
                     src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
                     alt={`${book.title} cover`}
                 />
             </div>
             <form
                 onSubmit={saveNote}
-                className="col-md-6 col-12 position-relative"
+                className="relative w-1/2"
             >
-                <h2 className="fst-italic">{book.title}</h2>
+                <h2 className="text-4xl italic">{book.title}</h2>
                 <p className="fs-4 fw-medium">by {book.author}</p>
                 <i
                     onClick={exitNote}
-                    className="fa fa-times hover position-absolute top-0 end-0 fs-3 m-2"
+                    className="fa fa-times hover absolute top-0 end-0 m-2"
                     aria-hidden="true"
                 ></i>
-                <div className="d-flex flex-column">
-                    <label htmlFor="review" className="fs-4 fw-medium">
+                <div className="flex flex-col">
+                    <label htmlFor="review" className="text-xl">
                         review:
                     </label>
                     <textarea
                         value={myNote.review}
                         onChange={addToNote}
-                        className="rounded border-0 p-2"
+                        className="rounded border p-2"
                         name="review"
                         id="review"
                         rows="3"
                     ></textarea>
                 </div>
-                <div className="d-flex flex-column">
+                <div className="flex flex-col">
                     <label htmlFor="quotes" className="fs-4 fw-medium">
                         quotes:
                     </label>
                     <textarea
                         value={myNote.quotes}
                         onChange={addToNote}
-                        className="rounded border-0 p-2"
+                        className="rounded border p-2"
                         name="quotes"
                         id="quotes"
                         rows="5"
                     ></textarea>
                 </div>
-                <div className="d-flex flex-column">
-                    <label htmlFor="notes" className="fs-4 fw-medium">
+                <div className="flex flex-col">
+                    <label htmlFor="notes" className="text-xl">
                         notes:
                     </label>
                     <textarea
                         value={myNote.notes}
                         onChange={addToNote}
-                        className="rounded border-0 p-2"
+                        className="rounded border p-2 mb-5"
                         name="notes"
                         id="notes"
                         rows="5"
                     ></textarea>
-                    <BookMenu book={myNote} addCategory={addCategory} />
+                    <BookMenu book={myNote} addCategory={addCategory}/>
                 </div>
-                <div className="d-flex justify-content-end mt-5">
+                <div className="flex justify-end mt-5">
                     <button
                         type="button"
                         onClick={deleteNote}
-                        className="note-button mx-5 bg-danger-subtle text-danger font-bold"
+                        className="mx-5 bg-red-300 text-white border-black px-2 rounded font-bold"
                     >
                         delete
                     </button>
