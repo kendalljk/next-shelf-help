@@ -17,7 +17,7 @@ const NotePage = ({ params }) => {
             try {
                 console.log("Searching for book by title: ", title);
                 const response = await axios.get(
-                    `${process.env.NEXTAUTH_URL}/api/books?title=${title}`
+                    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books?title=${title}`
                 );
                 setBook(response.data.books);
                 setMyNote(response.data.books);
@@ -60,7 +60,7 @@ const NotePage = ({ params }) => {
         try {
             const checkDuplicates = await axios.get(
                 `${
-                    process.env.NEXTAUTH_URL
+                    process.env.NEXT_PUBLIC_NEXTAUTH_URL
                 }/api/books?title=${encodeURIComponent(myNote.title)}`
             );
 
@@ -80,7 +80,7 @@ const NotePage = ({ params }) => {
                   console.log("myNote update: ", myNote)
                     const updateResponse = await axios.put(
                         `${
-                            process.env.NEXTAUTH_URL
+                            process.env.NEXT_PUBLIC_NEXTAUTH_URL
                         }/api/books?title=${encodeURIComponent(myNote.title)}`,
                         myNote
                     );
@@ -97,7 +97,7 @@ const NotePage = ({ params }) => {
             }
 
             const response = await axios.post(
-                `${process.env.NEXTAUTH_URL}/api/books`,
+                `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books`,
                 myNote
             );
 
@@ -116,9 +116,9 @@ const NotePage = ({ params }) => {
         event.preventDefault();
         try {
             const response = await axios.delete(
-                `${process.env.NEXTAUTH_URL}/books?title=${encodeURIComponent(
-                    myNote.title
-                )}`
+                `${
+                    process.env.NEXT_PUBLIC_NEXTAUTH_URL
+                }/books?title=${encodeURIComponent(myNote.title)}`
             );
             if (response.status === 200) {
                 console.log("Book deleted book.");

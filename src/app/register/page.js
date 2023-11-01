@@ -21,8 +21,9 @@ const RegisterPage = () => {
 
         try {
             const existingUser = await axios.post(
-                `${process.env.NEXTAUTH_URL}/api/user`, {email}
-          );
+                `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`,
+                { email }
+            );
 
           if (existingUser) {
             setError("User already exists.")
@@ -30,7 +31,7 @@ const RegisterPage = () => {
           }
 
             const user = await axios.post(
-                `${process.env.NEXTAUTH_URL}/api/register`,
+                `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/register`,
                 {
                     fullName: fullName,
                     email: email,

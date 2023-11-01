@@ -11,14 +11,13 @@ const BookInfo = ({ params }) => {
     const [book, setBook] = useState({});
     const [isEditing, setIsEditing] = useState(false);
 
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.NEXTAUTH_URL}/api/books?title=${title}`
+                    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books?title=${title}`
                 );
-              console.log("response: ", response)
+                console.log("response: ", response);
                 setBook(response.data.books);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);
@@ -32,9 +31,9 @@ const BookInfo = ({ params }) => {
         if (isEditing) {
             try {
                 await axios.put(
-                    `${
-                        process.env.NEXTAUTH_URL
-                    }/api/books?title=${encodeURIComponent(title)}`,
+                    `${process.env._URL}/api/books?title=${encodeURIComponent(
+                        title
+                    )}`,
                     book
                 );
                 alert("Success!");
@@ -52,18 +51,18 @@ const BookInfo = ({ params }) => {
         console.log("Updated Book:", book);
     };
 
-  const deleteNote = async (event) => {
-      console.log("deleting...")
+    const deleteNote = async (event) => {
+        console.log("deleting...");
         event.preventDefault();
 
-    try {
-          console.log("title for deletion: ", title)
+        try {
+            console.log("title for deletion: ", title);
             const response = await axios.delete(
-                `${process.env.NEXTAUTH_URL}/api/books?title=${encodeURIComponent(
-                  title
-                )}`
-      );
-      console.log("response: ", response)
+                `${
+                    process.env.NEXT_PUBLIC_NEXTAUTH_URL
+                }/api/books?title=${encodeURIComponent(title)}`
+            );
+            console.log("response: ", response);
             if (response.status === 200) {
                 console.log("Book deleted.");
                 if (book.category === "tbr") {
