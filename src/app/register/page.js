@@ -21,7 +21,7 @@ const RegisterPage = () => {
 
         try {
             const existingUser = await axios.post(
-                "http://localhost:3000/api/user", {email}
+                `${process.env.NEXTAUTH_URL}/api/user`, {email}
           );
 
           if (existingUser) {
@@ -30,7 +30,7 @@ const RegisterPage = () => {
           }
 
             const user = await axios.post(
-                "http://localhost:3000/api/register",
+                `${process.env.NEXTAUTH_URL}/api/register`,
                 {
                     fullName: fullName,
                     email: email,

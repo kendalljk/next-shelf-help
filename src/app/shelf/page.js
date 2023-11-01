@@ -12,7 +12,7 @@ const Shelf = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/api/books`
+                    `${process.env.NEXTAUTH_URL}/api/books`
                 );
                 console.log("response: ", response);
                 setBooks(response.data.books);

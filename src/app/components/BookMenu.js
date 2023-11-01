@@ -37,7 +37,7 @@ const BookMenu = ({ book, addCategory }) => {
           )
           try {
                 const response = await axios.post(
-                    "http://localhost:3000/api/books",
+                    `${process.env.NEXTAUTH_URL}/api/books`,
                     newBook
                 );
                 if (response.status === 201) {

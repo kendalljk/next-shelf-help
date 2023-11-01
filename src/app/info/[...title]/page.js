@@ -16,8 +16,8 @@ const BookInfo = ({ params }) => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/api/books?title=${title}`
-              );
+                    `${process.env.NEXTAUTH_URL}/api/books?title=${title}`
+                );
               console.log("response: ", response)
                 setBook(response.data.books);
             } catch (error) {
@@ -32,9 +32,9 @@ const BookInfo = ({ params }) => {
         if (isEditing) {
             try {
                 await axios.put(
-                    `http://localhost:3000/api/books?title=${encodeURIComponent(
-                        title
-                    )}`,
+                    `${
+                        process.env.NEXTAUTH_URL
+                    }/api/books?title=${encodeURIComponent(title)}`,
                     book
                 );
                 alert("Success!");
@@ -59,7 +59,7 @@ const BookInfo = ({ params }) => {
     try {
           console.log("title for deletion: ", title)
             const response = await axios.delete(
-                `http://localhost:3000/api/books?title=${encodeURIComponent(
+                `${process.env.NEXTAUTH_URL}/api/books?title=${encodeURIComponent(
                   title
                 )}`
       );

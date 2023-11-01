@@ -12,7 +12,7 @@ const TBR = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/api/books`
+                    `${process.env.NEXTAUTH_URL}/api/books`
                 );
                 setBooks(response.data.books);
             } catch (error) {

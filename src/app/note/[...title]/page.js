@@ -17,7 +17,7 @@ const NotePage = ({ params }) => {
             try {
                 console.log("Searching for book by title: ", title);
                 const response = await axios.get(
-                    `http://localhost:3000/api/books?title=${title}`
+                    `${process.env.NEXTAUTH_URL}/api/books?title=${title}`
                 );
                 setBook(response.data.books);
                 setMyNote(response.data.books);
@@ -59,9 +59,9 @@ const NotePage = ({ params }) => {
 
         try {
             const checkDuplicates = await axios.get(
-                `http://localhost:3000/api/books?title=${encodeURIComponent(
-                    myNote.title
-                )}`
+                `${
+                    process.env.NEXTAUTH_URL
+                }/api/books?title=${encodeURIComponent(myNote.title)}`
             );
 
             if (checkDuplicates.data) {
@@ -79,9 +79,9 @@ const NotePage = ({ params }) => {
                 } else {
                   console.log("myNote update: ", myNote)
                     const updateResponse = await axios.put(
-                        `http://localhost:3000/api/books?title=${encodeURIComponent(
-                            myNote.title
-                        )}`,
+                        `${
+                            process.env.NEXTAUTH_URL
+                        }/api/books?title=${encodeURIComponent(myNote.title)}`,
                         myNote
                     );
                     if (updateResponse.status === 200) {
@@ -97,7 +97,7 @@ const NotePage = ({ params }) => {
             }
 
             const response = await axios.post(
-                "http://localhost:3000/api/books",
+                `${process.env.NEXTAUTH_URL}/api/books`,
                 myNote
             );
 
@@ -116,7 +116,7 @@ const NotePage = ({ params }) => {
         event.preventDefault();
         try {
             const response = await axios.delete(
-                `http://localhost:3000/api/books?title=${encodeURIComponent(
+                `${process.env.NEXTAUTH_URL}/books?title=${encodeURIComponent(
                     myNote.title
                 )}`
             );
