@@ -53,7 +53,7 @@ const LoginPage = (params) => {
                         <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (
-                    <div className="bg-white p-5 rounded-lg flex flex-col align-items-center border shadow">
+                    <form className="bg-white p-5 rounded-lg flex flex-col align-items-center border shadow" onSubmit={handleLogin}>
                         <h1 className="text-slate-800 text-2xl font-semibold">
                             Login
                         </h1>
@@ -73,7 +73,7 @@ const LoginPage = (params) => {
                         />
                         <button
                             className="bg-blue-400  bg-opacity-75 my-1 py-1.5 px-3 text-white font-light border-2 border-slate-600 rounded"
-                            onClick={handleLogin}
+                            type="submit"
                         >
                             Login
                         </button>
@@ -91,7 +91,7 @@ const LoginPage = (params) => {
                                 Register
                             </Link>
                         </p>
-                    </div>
+                    </form>
                 )}
             </div>
         </div>
