@@ -2,8 +2,11 @@ import dbConnect from "@/app/lib/dbConnect";
 import User from "@/app/models/user";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
+import { setCorsHeaders } from "../../utils/cors";
+
 
 export async function POST(req) {
+  setCorsHeaders(res);
     try {
         const { fullName, email, password } = await req.json();
         const hashedPassword = await bcrypt.hash(password, 10);

@@ -3,8 +3,11 @@ import Book from "@/app/models/book";
 import User from "@/app/models/user";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { setCorsHeaders } from "../../utils/cors";
+
 
 export async function POST(req, res) {
+  setCorsHeaders(res);
     try {
         const {
             title,
@@ -49,6 +52,7 @@ export async function POST(req, res) {
 }
 
 export async function GET(req, res) {
+  setCorsHeaders(res);
     const searchParams = req.nextUrl.searchParams;
     const title = searchParams.get("title");
     const token = await getToken({ req });
@@ -95,6 +99,7 @@ export async function GET(req, res) {
 }
 
 export async function PUT(req, res) {
+  setCorsHeaders(res);
     const searchParams = req.nextUrl.searchParams;
     const title = searchParams.get("title");
     const token = await getToken({ req });
@@ -153,6 +158,7 @@ export async function PUT(req, res) {
 }
 
 export async function DELETE(req, res) {
+  setCorsHeaders(res);
     const searchParams = req.nextUrl.searchParams;
     const title = searchParams.get("title");
     const token = await getToken({ req });
