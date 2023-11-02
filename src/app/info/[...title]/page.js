@@ -30,7 +30,7 @@ const BookInfo = ({ params }) => {
         if (isEditing) {
             try {
                 await axios.put(
-                    `${process.env._URL}/api/books?title=${encodeURIComponent(
+                    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books?title=${encodeURIComponent(
                         title
                     )}`,
                     book
