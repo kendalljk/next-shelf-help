@@ -78,7 +78,9 @@ const RegisterPage = () => {
                             type="text"
                             placeholder="Email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) =>
+                                setEmail(e.target.value.toLowerCase())
+                            }
                         />
                         <input
                             className="my-1 p-1 border"

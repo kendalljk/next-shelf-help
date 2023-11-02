@@ -118,7 +118,7 @@ const NotePage = ({ params }) => {
     };
 
     return (
-        <section className="flex min-h-screen w-full justify-center gap-20 bg-pages pt-24">
+        <section className="flex min-h-screen w-full justify-center gap-20 bg-pages pt-24 h-full">
             <div className="w-full lg:w-3/4 flex flex-col lg:flex-row lg:justify-center gap-10 max-h-screen">
                 <div className="w-full flex lg:w-1/2  justify-center">
                     <img
