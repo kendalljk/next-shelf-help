@@ -13,12 +13,6 @@ const LoginPage = (params) => {
 
     const { data: session } = useSession();
 
-    if (session) {
-        console.log("session", session);
-    } else {
-        console.log("nobody logged in");
-    }
-
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -35,7 +29,6 @@ const LoginPage = (params) => {
             router.push("/shelf");
             setLoggedIn(true);
         } catch (error) {
-            console.log(error);
         }
     };
 

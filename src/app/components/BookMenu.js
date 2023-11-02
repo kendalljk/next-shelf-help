@@ -20,7 +20,6 @@ const BookMenu = ({ book, addCategory }) => {
 
     const handleCategoryChange = async (e) => {
       const newCategory = e.target.value;
-      console.log("new category: ", newCategory)
         let newBook = {
             author: book.author,
             title: book.title,
@@ -29,19 +28,13 @@ const BookMenu = ({ book, addCategory }) => {
             user: session.user.id,
         };
 
-        console.log("new book", newBook);
-
       if (pathname.startsWith("/search")) {
-        console.log(
-            "start searching"
-          )
           try {
                 const response = await axios.post(
                     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books`,
                     newBook
                 );
                 if (response.status === 201) {
-                    console.log("Book successfully saved to MongoDB.");
                     if (newCategory === "read") {
                         router.push(`/note/${book.title}`);
                     } else if (newCategory === "reading") {

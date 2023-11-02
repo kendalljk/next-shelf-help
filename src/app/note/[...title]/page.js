@@ -6,7 +6,6 @@ import BookMenu from "@/app/components/BookMenu";
 
 const NotePage = ({ params }) => {
     const title = decodeURIComponent(params.title[0]);
-    console.log("title: ", title);
     const pathname = usePathname();
     const router = useRouter();
     const [book, setBook] = useState({});
@@ -15,7 +14,6 @@ const NotePage = ({ params }) => {
     useEffect(() => {
         const searchBook = async (title) => {
             try {
-                console.log("Searching for book by title: ", title);
                 const response = await axios.get(
                     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books?title=${title}`
                 );
@@ -28,14 +26,6 @@ const NotePage = ({ params }) => {
 
         searchBook(title);
     }, [title]);
-
-    useEffect(() => {
-        console.log("returned book by title (updated): ", book);
-    }, [book]);
-
-    useEffect(() => {
-        console.log("Updated note (updated): ", myNote);
-    }, [myNote]);
 
     const addToNote = (event) => {
         const { name, value } = event.target;
@@ -53,9 +43,7 @@ const NotePage = ({ params }) => {
     };
 
     const saveNote = async (event) => {
-        console.log("saving...");
         event.preventDefault();
-        console.log("my note", myNote);
 
         try {
             const checkDuplicates = await axios.get(
@@ -65,7 +53,6 @@ const NotePage = ({ params }) => {
             );
 
             if (checkDuplicates.data) {
-                console.log("duplicates", checkDuplicates);
                 if (
                     checkDuplicates.data.author === myNote.author &&
                     checkDuplicates.data.title === myNote.title &&
@@ -77,7 +64,6 @@ const NotePage = ({ params }) => {
                     router.push("/shelf");
                     return;
                 } else {
-                  console.log("myNote update: ", myNote)
                     const updateResponse = await axios.put(
                         `${
                             process.env.NEXT_PUBLIC_NEXTAUTH_URL
@@ -85,27 +71,18 @@ const NotePage = ({ params }) => {
                         myNote
                     );
                     if (updateResponse.status === 200) {
-                        console.log("Book successfully updated in MongoDB.");
                         router.push("/shelf");
                     } else {
-                        console.log("Failed to update the book.");
                     }
                     return;
                 }
             } else {
-                console.log("no prior note found");
             }
 
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books`,
                 myNote
             );
-
-            if (response.status === 201) {
-                console.log("Book successfully saved to MongoDB.");
-            } else {
-                console.log("Failed to save the book.");
-            }
         } catch (error) {
             console.error("An error occurred:", error);
         }
@@ -121,14 +98,11 @@ const NotePage = ({ params }) => {
                 }/books?title=${encodeURIComponent(myNote.title)}`
             );
             if (response.status === 200) {
-                console.log("Book deleted book.");
                 if (book.category === "tbr") {
                     router.push("/tbr");
                 } else {
                     router.push("/shelf");
                 }
-            } else {
-                console.log("Failed to delete the book.");
             }
         } catch (error) {
             console.error("An error occurred:", error);

@@ -14,9 +14,7 @@ const Shelf = () => {
                 const response = await axios.get(
                     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books`
                 );
-                console.log("response: ", response);
                 setBooks(response.data.books);
-                console.log("books returned: ", books);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);
             }

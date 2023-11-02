@@ -17,7 +17,6 @@ const BookInfo = ({ params }) => {
                 const response = await axios.get(
                     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books?title=${title}`
                 );
-                console.log("response: ", response);
                 setBook(response.data.books);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);
@@ -48,30 +47,24 @@ const BookInfo = ({ params }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setBook({ ...book, [name]: value });
-        console.log("Updated Book:", book);
     };
 
     const deleteNote = async (event) => {
-        console.log("deleting...");
         event.preventDefault();
 
         try {
-            console.log("title for deletion: ", title);
             const response = await axios.delete(
                 `${
                     process.env.NEXT_PUBLIC_NEXTAUTH_URL
                 }/api/books?title=${encodeURIComponent(title)}`
             );
-            console.log("response: ", response);
             if (response.status === 200) {
-                console.log("Book deleted.");
                 if (book.category === "tbr") {
                     router.push("/tbr");
                 } else {
                     router.push("/shelf");
                 }
             } else {
-                console.log("Failed to delete the book.");
             }
         } catch (error) {
             console.error("An error occurred:", error);

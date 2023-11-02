@@ -13,15 +13,13 @@ const Search = ({ params }) => {
 
     useEffect(() => {
         if (query) {
-            console.log(query);
             searchForBooks(decodeURIComponent(query), searchType);
             setSearchValue(decodeURIComponent(query));
         }
     }, [query, searchType]);
 
     const searchForBooks = async (searchQuery, type) => {
-        setBooks([]);
-        console.log(`Search by ${type}: ${searchQuery}`);
+        setBooks([]);;
 
         let apiUrl;
 
@@ -52,12 +50,10 @@ const Search = ({ params }) => {
         e.preventDefault();
         router.push(`/search/${inputValue}`);
         setSearchValue(inputValue);
-        console.log("search value", searchValue);
-        console.log("Returned books", books);
     };
 
     return (
-        <section className="flex min-h-screen w-full flex-col items-center bg-pages">
+        <section className="flex min-h-screen w-full flex-col items-center bg-pages pb-5">
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col w-2/3 md:w-1/3 pt-24"

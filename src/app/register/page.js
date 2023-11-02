@@ -26,7 +26,6 @@ const RegisterPage = () => {
             );
 
             const existingUser = res.data.existingUser;
-            console.log("existing user: ", existingUser);
 
             if (existingUser) {
                 setError("User already exists.");
@@ -41,7 +40,6 @@ const RegisterPage = () => {
                     password: password,
                 }
             );
-            console.log(user);
             if (user.status === 201) {
                 setRegistrationSuccessful(true);
             }

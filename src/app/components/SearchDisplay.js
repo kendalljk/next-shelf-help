@@ -56,7 +56,8 @@ const SearchDisplay = ({ books, searchValue }) => {
                             <img
                                 src={`http://covers.openlibrary.org/b/id/${book.coverI}-M.jpg`}
                                 alt={`${book.title} cover`}
-                                width="100rem"
+                        width="100rem"
+                        loading="lazy"
                             />
                             <div className="flex flex-col justify-between pl-10">
                                 <div>
