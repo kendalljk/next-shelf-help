@@ -1,7 +1,6 @@
 import dbConnect from "../../lib/dbConnect";
 import User from "../../models/user";
 import { NextResponse } from "next/server";
-import { setCorsHeaders } from "../../utils/cors";
 
 export async function POST(req, res) {
     try {
