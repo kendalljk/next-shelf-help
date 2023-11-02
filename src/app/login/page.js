@@ -53,7 +53,10 @@ const LoginPage = (params) => {
                         <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (
-                    <form className="bg-white p-5 rounded-lg flex flex-col align-items-center border shadow" onSubmit={handleLogin}>
+                    <form
+                        className="bg-white p-5 rounded-lg flex flex-col align-items-center border shadow"
+                        onSubmit={handleLogin}
+                    >
                         <h1 className="text-slate-800 text-2xl font-semibold">
                             Login
                         </h1>
@@ -62,7 +65,9 @@ const LoginPage = (params) => {
                             type="text"
                             placeholder="Email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) =>
+                                setEmail(e.target.value.toLowerCase())
+                            }
                         />
                         <input
                             className="my-1 p-1 border"

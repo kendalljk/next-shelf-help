@@ -36,7 +36,7 @@ const Shelf = () => {
                 </h2>
                 <div className="flex flex-wrap w-full">
                     {readingBooks.map((book, i) => (
-                        <div key={i} className="w-1/12 mx-5">
+                        <div key={i} className="w-1/6 lg:w-1/12 mx-5">
                             <ShelfDisplay book={book} />
                         </div>
                     ))}
@@ -48,7 +48,7 @@ const Shelf = () => {
                 </h2>
                 <div className="flex flex-wrap w-full">
                     {readBooks.map((book, i) => (
-                        <div key={i} className="w-1/12 mx-5">
+                        <div key={i} className="w-1/6 lg:w-1/12 mx-5">
                             <ShelfDisplay book={book} />
                         </div>
                     ))}

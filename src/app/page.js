@@ -6,7 +6,7 @@ export default function Home() {
 
     const directToSearch = (e) => {
         e.preventDefault();
-        router.push("/search/");
+        router.push("/register");
     };
 
     return (
@@ -27,10 +27,10 @@ export default function Home() {
                             Shelf improvement for people who love to read.
                         </h2>
                         <button
-                            onClick={directToSearch}
+                            onClick={directToJoin}
                             className="bg-blue-400  bg-opacity-75 py-1.5 px-3 text-white font-light border-2 border-slate-600 rounded"
                         >
-                            search books
+                            join now
                         </button>
                     </div>
                 </div>
