@@ -20,15 +20,18 @@ const RegisterPage = () => {
         }
 
         try {
-            const existingUser = await axios.get(
+            const res = await axios.post(
                 `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`,
                 { email }
             );
 
-          if (existingUser) {
-            setError("User already exists.")
-            return;
-          }
+            const existingUser = res.data.existingUser;
+            console.log("existing user: ", existingUser);
+
+            if (existingUser) {
+                setError("User already exists.");
+                return;
+            }
 
             const user = await axios.post(
                 `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/register`,
@@ -39,7 +42,7 @@ const RegisterPage = () => {
                 }
             );
             console.log(user);
-            if (user.status === 200) {
+            if (user.status === 201) {
                 setRegistrationSuccessful(true);
             }
         } catch (error) {
@@ -52,9 +55,12 @@ const RegisterPage = () => {
             <div className="flex flex-col align-items-center w-1/2 md:w-1/4">
                 {registrationSuccessful ? (
                     <div>
-                        <p>
-                            Registration successful! You can now
-                            <Link href="/login">log in</Link>.
+                        <p className="bg-white p-5 border">
+                            {`Registration successful! You can now `}
+                            <Link href="/login" className="underline">
+                                log in
+                            </Link>
+                            .
                         </p>
                     </div>
                 ) : (
