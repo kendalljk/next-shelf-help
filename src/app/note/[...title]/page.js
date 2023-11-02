@@ -95,7 +95,7 @@ const NotePage = ({ params }) => {
             const response = await axios.delete(
                 `${
                     process.env.NEXT_PUBLIC_NEXTAUTH_URL
-                }/books?title=${encodeURIComponent(myNote.title)}`
+                }/api/books?title=${encodeURIComponent(myNote.title)}`
             );
             if (response.status === 200) {
                 if (book.category === "tbr") {
