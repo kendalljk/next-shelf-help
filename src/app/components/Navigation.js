@@ -7,10 +7,9 @@ import Menu from "./Menu";
 
 function Navigation() {
     const router = useRouter();
-  const pathname = usePathname();
-  const { data: session } = useSession();
-  const [searchValue, setSearchValue] = useState("");
-
+    const pathname = usePathname();
+    const { data: session } = useSession();
+    const [searchValue, setSearchValue] = useState("");
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -34,43 +33,43 @@ function Navigation() {
                         Shelf Help
                     </h1>
                 </Link>
-                <div className="flex gap-10 ml-10 text-lg text-blue-300 hidden lg:flex">
-                  {session && session.user &&
+                {session && session.user && (
                     <>
-                    <Link
-                        href="/"
-                        className={
-                            pathname === "/"
-                                ? "underline underline-offset-4"
-                                : ""
-                        }
-                    >
-                        home
-            </Link>
+                        <div className="flex gap-10 ml-10 text-lg text-blue-300 hidden lg:flex">
+                            <Link
+                                href="/"
+                                className={
+                                    pathname === "/"
+                                        ? "underline underline-offset-4"
+                                        : ""
+                                }
+                            >
+                                home
+                            </Link>
 
-                    <Link
-                        href="/shelf/"
-                        className={
-                            pathname === "/shelf"
-                                ? "underline underline-offset-4"
-                                : ""
-                        }
-                    >
-                        shelf
-                    </Link>
-                    <Link
-                        href="/tbr"
-                        className={
-                            pathname === "/tbr"
-                                ? "underline underline-offset-4"
-                                : ""
-                        }
-                    >
-                        tbr
-                    </Link>
-              </>
-}
-                </div>
+                            <Link
+                                href="/shelf/"
+                                className={
+                                    pathname === "/shelf"
+                                        ? "underline underline-offset-4"
+                                        : ""
+                                }
+                            >
+                                shelf
+                            </Link>
+                            <Link
+                                href="/tbr"
+                                className={
+                                    pathname === "/tbr"
+                                        ? "underline underline-offset-4"
+                                        : ""
+                                }
+                            >
+                                tbr
+                            </Link>
+                        </div>
+                    </>
+                )}
             </div>
 
             <div className="flex items-center mr-5">
