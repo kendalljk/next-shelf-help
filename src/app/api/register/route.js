@@ -6,7 +6,6 @@ import { setCorsHeaders } from "../../utils/cors";
 
 
 export async function POST(req) {
-  setCorsHeaders(res);
     try {
         const { fullName, email, password } = await req.json();
         const hashedPassword = await bcrypt.hash(password, 10);

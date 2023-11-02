@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import { setCorsHeaders } from "../../utils/cors";
 
 export async function POST(req, res) {
-      setCorsHeaders(res);
     try {
       await dbConnect();
         const { email } = await req.json();
