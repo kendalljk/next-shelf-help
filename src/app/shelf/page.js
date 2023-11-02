@@ -12,7 +12,7 @@ const Shelf = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_URL}/api/books`
+                    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books`
                 );
                 console.log("response: ", response);
                 setBooks(response.data.books);

@@ -20,7 +20,7 @@ const RegisterPage = () => {
         }
 
         try {
-            const existingUser = await axios.post(
+            const existingUser = await axios.get(
                 `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user`,
                 { email }
             );
