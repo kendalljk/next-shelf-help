@@ -32,7 +32,7 @@ const ShelfDisplay = ({ book }) => {
             onMouseLeave={handleMouseLeave}
             className="flex flex-col items-center w-full transition-transform duration-300 hover:scale-110 py-2"
         >
-            <img className="w-32 h-44"
+            <img className="w-36 h-44"
                 src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
                 alt={`${book.title} cover`}
             />

@@ -58,11 +58,11 @@ const Shelf = () => {
                 <h2 className="text-2xl italic text-blue-300 m-5">
                     Currently reading...
                 </h2>
-                <div className="flex flex-wrap w-full">
+                <div className="flex flex-wrap w-full px-5">
                     {readingBooks.map((book, i) => (
                         <div
                             key={book.id || i}
-                            className="w-1/6 lg:w-1/12 mx-5"
+                            className="w-1/6 lg:w-1/12 mx-2"
                         >
                             <ShelfDisplay book={book} />
                         </div>
@@ -74,7 +74,7 @@ const Shelf = () => {
                     <h2 className="text-2xl italic text-blue-300 m-5">
                         On the shelf...
                     </h2>
-                    <div className="flex">
+                    <div className="flex mx-12">
                         <label
                             htmlFor="shelf-filter"
                             className="text-2xl italic text-blue-300 m-5"
@@ -93,11 +93,11 @@ const Shelf = () => {
                         </select>
                     </div>
                 </div>
-                <div className="flex flex-wrap w-full">
+                <div className="flex flex-wrap w-full px-5">
                     {filteredBooks.map((book, i) => (
                         <div
                             key={book.id || i}
-                            className="w-1/6 lg:w-1/12 mx-5 hover:cursor-pointer"
+                            className="w-1/6 lg:w-1/12 mx-2 hover:cursor-pointer"
                         >
                             <ShelfDisplay book={book} />
                         </div>
