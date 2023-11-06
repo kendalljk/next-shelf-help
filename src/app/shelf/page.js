@@ -55,10 +55,10 @@ const Shelf = () => {
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
             <div className="flex flex-col w-full">
-                <h2 className="text-2xl italic text-blue-300 px-5">
+                <h2 className="text-2xl italic text-blue-300 pl-5">
                     Currently reading...
                 </h2>
-                <div className="flex flex-wrap w-full px-5">
+                <div className="flex flex-wrap w-full pl-5">
                     {readingBooks.map((book, i) => (
                         <div
                             key={book.id || i}
@@ -71,7 +71,7 @@ const Shelf = () => {
             </div>
             <div className="flex flex-col w-full mt-10">
                 <div className="flex justify-between">
-                    <h2 className="text-2xl italic text-blue-300 px-5">
+                    <h2 className="text-2xl italic text-blue-300 pl-5">
                         On the shelf...
                     </h2>
                     <div className="flex mx-12">
@@ -93,7 +93,7 @@ const Shelf = () => {
                         </select>
                     </div>
                 </div>
-                <div className="flex flex-wrap w-full px-5">
+                <div className="flex flex-wrap w-full pl-5">
                     {filteredBooks.map((book, i) => (
                         <div
                             key={book.id || i}
