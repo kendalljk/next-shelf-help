@@ -50,7 +50,8 @@ const BookInfo = ({ params }) => {
         setBook({ ...book, [name]: value });
     };
 
-    const addRating = (rate) => {
+const addRating = (rate) => {
+    if (isEditing) {
         const numRate = Number(rate);
         setRating(numRate);
         setBook((prevState) => ({
@@ -58,7 +59,8 @@ const BookInfo = ({ params }) => {
             rating: numRate,
         }));
         console.log("My note with rating: ", book);
-    };
+    }
+};
 
     const deleteNote = async (event) => {
         event.preventDefault();
@@ -130,6 +132,10 @@ const BookInfo = ({ params }) => {
                                     book.rating >= star ? "text-blue-500" : ""
                                 }`}
                                 onClick={() => addRating(star)}
+                                style={{
+                                    pointerEvents: isEditing ? "auto" : "none",
+                                    opacity: isEditing ? 1 : 0.5,
+                                }}
                             />
                         ))}
                     </div>
