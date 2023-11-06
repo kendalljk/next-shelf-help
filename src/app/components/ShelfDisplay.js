@@ -32,13 +32,12 @@ const ShelfDisplay = ({ book }) => {
             onMouseLeave={handleMouseLeave}
             className="flex flex-col items-center w-full transition-transform duration-300 hover:scale-110"
         >
-            <img
+            <img className="w-32 h-44"
                 src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
                 alt={`${book.title} cover`}
-                width="100rem"
             />
-            <div className="w-full flex flex-wrap justify-center text-center">
-                <h4 className="">{book.title}</h4>
+            <div className="w-full">
+          <h4 className="text-center text-lg truncate hover:overflow-visible hover:flex hover:flex-wrap hover:text-center hover:whitespace-normal">{book.title}</h4>
             </div>
         </div>
     );
