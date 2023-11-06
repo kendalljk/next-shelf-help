@@ -23,7 +23,9 @@ const TBR = () => {
         fetchData();
     }, []);
 
-    const tbrBooks = books.filter((book) => book.category === "tbr");
+    const tbrBooks = books
+        .filter((book) => book.category === "tbr")
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">

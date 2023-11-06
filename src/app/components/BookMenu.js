@@ -8,7 +8,7 @@ const BookMenu = ({ book, addCategory }) => {
     const pathname = usePathname();
     const router = useRouter();
     const { data: session } = useSession();
-  const [displayValue, setDisplayValue] = useState("Update Status");
+    const [displayValue, setDisplayValue] = useState("Update Status");
 
     useEffect(() => {
         if (pathname.startsWith("/search/")) {
@@ -19,17 +19,18 @@ const BookMenu = ({ book, addCategory }) => {
     }, [pathname]);
 
     const handleCategoryChange = async (e) => {
-      const newCategory = e.target.value;
+        const newCategory = e.target.value;
         let newBook = {
             author: book.author,
             title: book.title,
             cover: book.coverI || book.cover,
             category: newCategory,
+            rating: book.rating,
             user: session.user.id,
         };
 
-      if (pathname.startsWith("/search")) {
-          try {
+        if (pathname.startsWith("/search")) {
+            try {
                 const response = await axios.post(
                     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books`,
                     newBook

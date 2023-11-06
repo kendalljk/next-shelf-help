@@ -10,6 +10,7 @@ const NotePage = ({ params }) => {
     const router = useRouter();
     const [book, setBook] = useState({});
     const [myNote, setMyNote] = useState({});
+    const [rating, setRating] = useState(0);
 
     useEffect(() => {
         const searchBook = async (title) => {
@@ -19,6 +20,7 @@ const NotePage = ({ params }) => {
                 );
                 setBook(response.data.books);
                 setMyNote(response.data.books);
+                setRating(Number(response.data.books.rating) || 0);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);
             }
@@ -42,8 +44,19 @@ const NotePage = ({ params }) => {
         }));
     };
 
+const addRating = (rate) => {
+    const numRate = Number(rate);
+    setRating(numRate);
+    setMyNote((prevState) => ({
+        ...prevState,
+        rating: numRate,
+    }));
+    console.log("My note with rating: ", myNote);
+};
+
     const saveNote = async (event) => {
-        event.preventDefault();
+      event.preventDefault();
+      console.log("updated note: ", myNote)
 
         try {
             const checkDuplicates = await axios.get(
@@ -89,33 +102,35 @@ const NotePage = ({ params }) => {
         router.push("/shelf");
     };
 
-const deleteNote = async (event) => {
-    event.preventDefault();
+    const deleteNote = async (event) => {
+        event.preventDefault();
 
-    const userConfirmed = window.confirm("Are you sure you want to delete?");
+        const userConfirmed = window.confirm(
+            "Are you sure you want to delete?"
+        );
 
-    if (userConfirmed) {
-        try {
-            const response = await axios.delete(
-                `${
-                    process.env.NEXT_PUBLIC_NEXTAUTH_URL
-                }/api/books?title=${encodeURIComponent(myNote.title)}`
-            );
-            if (response.status === 200) {
-                if (book.category === "tbr") {
-                    router.push("/tbr");
-                } else {
-                    router.push("/shelf");
+        if (userConfirmed) {
+            try {
+                const response = await axios.delete(
+                    `${
+                        process.env.NEXT_PUBLIC_NEXTAUTH_URL
+                    }/api/books?title=${encodeURIComponent(myNote.title)}`
+                );
+                if (response.status === 200) {
+                    if (book.category === "tbr") {
+                        router.push("/tbr");
+                    } else {
+                        router.push("/shelf");
+                    }
                 }
+            } catch (error) {
+                console.error("An error occurred:", error);
+                alert("An error occurred while deleting the note.");
             }
-        } catch (error) {
-            console.error("An error occurred:", error);
-            alert("An error occurred while deleting the note.");
+        } else {
+            console.log("Note deletion was canceled by the user.");
         }
-    } else {
-        console.log("Note deletion was canceled by the user.");
-    }
-};
+    };
 
     const exitNote = () => {
         if (book.category === "tbr") {
@@ -138,20 +153,36 @@ const deleteNote = async (event) => {
                 <form
                     onSubmit={saveNote}
                     className="flex flex-col w-3/4 mx-auto lg:w-1/2"
-          >
-            <div className="flex justify-between">
-                    <h2 className="text-3xl italic">{book.title}</h2>
-                    <i
-                        onClick={exitNote}
-                        className="fa fa-times text-slate-700 text-xl py-1 border-2 hover:text-black  bg-slate-300 h-fit
+                >
+                    <div>
+                        <div className="flex justify-between">
+                            <h2 className="text-3xl italic">{book.title}</h2>
+                            <i
+                                onClick={exitNote}
+                                className="fa fa-times text-slate-700 text-xl py-1 border-2 hover:text-black  bg-slate-300 h-fit
 
                         active:bg-slate-200
                         active:border-2 active:border-slate-400
                         rounded-full px-2 m-2"
-                        aria-hidden="true"
-                    ></i>
-            </div>
-                    <p className="text-lg">by {book.author}</p>
+                                aria-hidden="true"
+                            ></i>
+                        </div>
+                        <p className="text-lg">by {book.author}</p>
+                        <div
+                            className="flex gap-5 py-2 text-blue-200"
+                        >
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <i
+                                    key={star}
+                                    value={star}
+                                    className={`fa-solid fa-star cursor-pointer ${
+                                        rating >= star ? "text-blue-500" : ""
+                                    }`}
+                                    onClick={() => addRating(star)}
+                                />
+                            ))}
+                        </div>
+                    </div>
                     <div className="flex flex-col">
                         <label htmlFor="review" className="text-xl">
                             review:

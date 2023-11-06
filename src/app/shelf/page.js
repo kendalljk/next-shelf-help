@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 const Shelf = () => {
     const [books, setBooks] = useState([]);
     const { data: session } = useSession();
+    const [filter, setFilter] = useState("recent");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,8 +24,33 @@ const Shelf = () => {
         fetchData();
     }, []);
 
-    const readingBooks = books.filter((book) => book.category === "reading");
+    const readingBooks = books
+        .filter((book) => book.category === "reading")
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     const readBooks = books.filter((book) => book.category === "read");
+
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value);
+    };
+
+    const sortedBooks = (books, filter) => {
+        switch (filter) {
+            case "alphabetical":
+                return [...books].sort((a, b) =>
+                    a.author.localeCompare(b.author)
+                );
+            case "rating":
+                return [...books].sort((a, b) => b.rating - a.rating);
+            case "recent":
+                return [...books].sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
+            default:
+                return books;
+        }
+    };
+
+    const filteredBooks = sortedBooks(readBooks, filter);
 
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
@@ -34,19 +60,45 @@ const Shelf = () => {
                 </h2>
                 <div className="flex flex-wrap w-full">
                     {readingBooks.map((book, i) => (
-                        <div key={i} className="w-1/6 lg:w-1/12 mx-5">
+                        <div
+                            key={book.id || i}
+                            className="w-1/6 lg:w-1/12 mx-5"
+                        >
                             <ShelfDisplay book={book} />
                         </div>
                     ))}
                 </div>
             </div>
             <div className="flex flex-col w-full mt-10">
-                <h2 className="text-2xl italic text-blue-300 m-5">
-                    On the shelf...
-                </h2>
+                <div className="flex justify-between">
+                    <h2 className="text-2xl italic text-blue-300 m-5">
+                        On the shelf...
+                    </h2>
+                    <div className="flex">
+                        <label
+                            htmlFor="shelf-filter"
+                            className="text-2xl italic text-blue-300 m-5"
+                        >
+                            <h2>Filter:</h2>
+                        </label>
+                        <select
+                            name="shelf-filter"
+                            id="shelf-filter"
+                            className="bg-transparent"
+                            onChange={handleFilterChange}
+                        >
+                            <option value="recent">Recently Added</option>
+                            <option value="alphabetical">Alphabetically</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                    </div>
+                </div>
                 <div className="flex flex-wrap w-full">
-                    {readBooks.map((book, i) => (
-                        <div key={i} className="w-1/6 xs:w-1/5 lg:w-1/12 mx-5 hover:cursor-pointer">
+                    {filteredBooks.map((book, i) => (
+                        <div
+                            key={book.id || i}
+                            className="w-1/6 lg:w-1/12 mx-5 hover:cursor-pointer"
+                        >
                             <ShelfDisplay book={book} />
                         </div>
                     ))}

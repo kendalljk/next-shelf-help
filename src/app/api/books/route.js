@@ -4,7 +4,6 @@ import User from "@/app/models/user";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function POST(req, res) {
     try {
         const {
@@ -12,6 +11,7 @@ export async function POST(req, res) {
             author,
             cover,
             category,
+            rating,
             review,
             quotes,
             notes,
@@ -33,6 +33,7 @@ export async function POST(req, res) {
             author,
             cover,
             category,
+            rating,
             review,
             quotes,
             notes,
@@ -118,25 +119,30 @@ export async function PUT(req, res) {
         );
     }
 
-
-
-  try {
-        const { category, notes, quotes, review } = await req.json();
-        console.log("req received: ", category, notes, quotes, review);
+    try {
+        const { category, notes, quotes, review, rating } = await req.json();
+        console.log("req received: ", category, notes, quotes, review, rating);
 
         const bookUpdates = {
             category,
+            rating,
             notes,
             quotes,
             review,
         };
 
+        console.log("Book updates: ", bookUpdates);
+
         const book = await Book.findOneAndUpdate(
             { title: decodeURIComponent(title), user: userId },
             bookUpdates,
-            { new: true }
-        );
+            { new: true, runValidators: true }
+        ).catch((err) => {
+            console.error("Update error:", err);
+            throw err;
+        });
         if (book) {
+            console.log("success", book);
             return NextResponse.json({ book });
         } else {
             return NextResponse.json(
@@ -181,7 +187,7 @@ export async function DELETE(req, res) {
             user: userId,
         });
 
-      console.log("book: ", book)
+        console.log("book: ", book);
 
         if (!book) {
             return NextResponse.json(
@@ -189,11 +195,11 @@ export async function DELETE(req, res) {
                 { status: 404 }
             );
         } else {
-
-        return NextResponse.json(
-            { message: "Book successfully deleted" },
-            { status: 200 }
-        );}
+            return NextResponse.json(
+                { message: "Book successfully deleted" },
+                { status: 200 }
+            );
+        }
     } catch (error) {
         console.error(error);
         return NextResponse.json(

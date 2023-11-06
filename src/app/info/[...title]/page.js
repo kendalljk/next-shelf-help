@@ -10,6 +10,7 @@ const BookInfo = ({ params }) => {
     const pathname = usePathname();
     const [book, setBook] = useState({});
     const [isEditing, setIsEditing] = useState(false);
+    const [rating, setRating] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,34 +50,44 @@ const BookInfo = ({ params }) => {
         setBook({ ...book, [name]: value });
     };
 
-  const deleteNote = async (event) => {
-    event.preventDefault();
+    const addRating = (rate) => {
+        const numRate = Number(rate);
+        setRating(numRate);
+        setBook((prevState) => ({
+            ...prevState,
+            rating: numRate,
+        }));
+        console.log("My note with rating: ", book);
+    };
 
-    const userConfirmed = window.confirm(
-      "Are you sure you want to delete?"
-    );
-    if (userConfirmed) {
-        try {
-            const response = await axios.delete(
-                `${
-                    process.env.NEXT_PUBLIC_NEXTAUTH_URL
-                }/api/books?title=${encodeURIComponent(title)}`
-            );
-            if (response.status === 200) {
-                if (book.category === "tbr") {
-                    router.push("/tbr");
-                } else {
-                    router.push("/shelf");
+    const deleteNote = async (event) => {
+        event.preventDefault();
+
+        const userConfirmed = window.confirm(
+            "Are you sure you want to delete?"
+        );
+        if (userConfirmed) {
+            try {
+                const response = await axios.delete(
+                    `${
+                        process.env.NEXT_PUBLIC_NEXTAUTH_URL
+                    }/api/books?title=${encodeURIComponent(title)}`
+                );
+                if (response.status === 200) {
+                    if (book.category === "tbr") {
+                        router.push("/tbr");
+                    } else {
+                        router.push("/shelf");
+                    }
                 }
+            } catch (error) {
+                console.error("An error occurred:", error);
+                alert("An error occurred while deleting the note.");
             }
-        } catch (error) {
-            console.error("An error occurred:", error);
-            alert("An error occurred while deleting the note.");
+        } else {
+            console.log("Note deletion was canceled by the user.");
         }
-    } else {
-        console.log("Note deletion was canceled by the user.");
-    }
-  }
+    };
 
     const exitNote = () => {
         if (book.category === "tbr") {
@@ -110,6 +121,18 @@ const BookInfo = ({ params }) => {
                         ></i>
                     </div>
                     <p className="text-lg">by {book.author}</p>
+                    <div className="flex gap-5 py-2 text-blue-200">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <i
+                                key={star}
+                                value={star}
+                                className={`fa-solid fa-star cursor-pointer ${
+                                    book.rating >= star ? "text-blue-500" : ""
+                                }`}
+                                onClick={() => addRating(star)}
+                            />
+                        ))}
+                    </div>
                     <div className="flex flex-col">
                         <label htmlFor="review" className="text-xl">
                             review:

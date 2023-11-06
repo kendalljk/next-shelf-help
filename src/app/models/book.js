@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const bookSchema = new Schema(
     {
@@ -23,6 +23,9 @@ const bookSchema = new Schema(
             type: String,
             enum: ["reading", "read", "tbr"],
         },
+        rating: {
+            type: Number,
+        },
         review: {
             type: String,
         },
@@ -41,6 +44,6 @@ const bookSchema = new Schema(
     { timestamps: true }
 );
 
-const Book = mongoose.models.Book || mongoose.model("Book", bookSchema)
+const Book = mongoose.models.Book || mongoose.model("Book", bookSchema);
 
 export default Book;

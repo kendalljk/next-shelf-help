@@ -25,7 +25,7 @@ const authOptions = {
 
                 await connectMongoDB();
                 const user = await User.findOne({ email });
-                console.log("user", user);
+                //console.log("user", user);
 
                 if (!user) {
                     return null;
@@ -46,7 +46,7 @@ const authOptions = {
     ],
     callbacks: {
         async jwt({ token, user, session }) {
-        console.log("jwt callback", { token, user, session });
+        //console.log("jwt callback", { token, user, session });
 
             if (user) {
                 return {
@@ -58,7 +58,7 @@ const authOptions = {
             return token;
         },
         async session({ session, token, user }) {
-            console.log("session callback", { session, token, user });
+            //console.log("session callback", { session, token, user });
             return {
                 ...session,
                 user: {
