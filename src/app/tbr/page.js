@@ -35,7 +35,7 @@ const TBR = () => {
                 </h2>
                 <div className="flex flex-wrap w-full px-5">
                     {tbrBooks.map((book, i) => (
-                        <div key={i} className="w-1/6 lg:w-1/12 mx-2">
+                        <div key={i} className="w-1/5 lg:w-1/12 mx-2">
                             <ShelfDisplay book={book} />
                         </div>
                     ))}

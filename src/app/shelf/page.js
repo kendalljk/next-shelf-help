@@ -55,14 +55,14 @@ const Shelf = () => {
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
             <div className="flex flex-col w-full">
-                <h2 className="text-2xl italic text-blue-300 m-5">
+                <h2 className="text-2xl italic text-blue-300 px-5">
                     Currently reading...
                 </h2>
                 <div className="flex flex-wrap w-full px-5">
                     {readingBooks.map((book, i) => (
                         <div
                             key={book.id || i}
-                            className="w-1/6 lg:w-1/12 mx-2"
+                            className="w-1/5 lg:w-1/12 mx-2"
                         >
                             <ShelfDisplay book={book} />
                         </div>
@@ -71,20 +71,20 @@ const Shelf = () => {
             </div>
             <div className="flex flex-col w-full mt-10">
                 <div className="flex justify-between">
-                    <h2 className="text-2xl italic text-blue-300 m-5">
+                    <h2 className="text-2xl italic text-blue-300 px-5">
                         On the shelf...
                     </h2>
                     <div className="flex mx-12">
                         <label
                             htmlFor="shelf-filter"
-                            className="text-2xl italic text-blue-300 m-5"
+                            className="text-2xl italic text-blue-300"
                         >
-                            <h2>Filter:</h2>
+                            <h2 className="hidden lg:inline">Filter:</h2>
                         </label>
                         <select
                             name="shelf-filter"
                             id="shelf-filter"
-                            className="bg-transparent"
+                            className="bg-transparent font-medium italic px-5"
                             onChange={handleFilterChange}
                         >
                             <option value="recent">Recently Added</option>
@@ -97,7 +97,7 @@ const Shelf = () => {
                     {filteredBooks.map((book, i) => (
                         <div
                             key={book.id || i}
-                            className="w-1/6 lg:w-1/12 mx-2 hover:cursor-pointer"
+                            className="w-1/5 lg:w-1/12 mx-2 hover:cursor-pointer"
                         >
                             <ShelfDisplay book={book} />
                         </div>
