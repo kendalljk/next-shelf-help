@@ -84,7 +84,7 @@ const Shelf = () => {
                         <select
                             name="shelf-filter"
                             id="shelf-filter"
-                            className="bg-transparent font-medium italic px-5"
+                            className="bg-transparent font-medium italic pr-5"
                             onChange={handleFilterChange}
                         >
                             <option value="recent">Recently Added</option>
