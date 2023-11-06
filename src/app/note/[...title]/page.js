@@ -89,8 +89,12 @@ const NotePage = ({ params }) => {
         router.push("/shelf");
     };
 
-    const deleteNote = async (event) => {
-        event.preventDefault();
+const deleteNote = async (event) => {
+    event.preventDefault();
+
+    const userConfirmed = window.confirm("Are you sure you want to delete?");
+
+    if (userConfirmed) {
         try {
             const response = await axios.delete(
                 `${
@@ -106,8 +110,12 @@ const NotePage = ({ params }) => {
             }
         } catch (error) {
             console.error("An error occurred:", error);
+            alert("An error occurred while deleting the note.");
         }
-    };
+    } else {
+        console.log("Note deletion was canceled by the user.");
+    }
+};
 
     const exitNote = () => {
         if (book.category === "tbr") {
@@ -129,19 +137,21 @@ const NotePage = ({ params }) => {
                 </div>
                 <form
                     onSubmit={saveNote}
-                    className="relative flex flex-col w-3/4 mx-auto lg:w-1/2"
-                >
+                    className="flex flex-col w-3/4 mx-auto lg:w-1/2"
+          >
+            <div className="flex justify-between">
                     <h2 className="text-3xl italic">{book.title}</h2>
-                    <p className="text-lg">by {book.author}</p>
                     <i
                         onClick={exitNote}
-                        className="fa fa-times text-slate-700 text-xl py-1 border-2 hover:text-black  bg-slate-300
+                        className="fa fa-times text-slate-700 text-xl py-1 border-2 hover:text-black  bg-slate-300 h-fit
 
                         active:bg-slate-200
                         active:border-2 active:border-slate-400
-                        rounded-full px-2 absolute top-0 end-0 m-2"
+                        rounded-full px-2 m-2"
                         aria-hidden="true"
                     ></i>
+            </div>
+                    <p className="text-lg">by {book.author}</p>
                     <div className="flex flex-col">
                         <label htmlFor="review" className="text-xl">
                             review:

@@ -46,7 +46,7 @@ const Shelf = () => {
                 </h2>
                 <div className="flex flex-wrap w-full">
                     {readBooks.map((book, i) => (
-                        <div key={i} className="w-1/6 lg:w-1/12 mx-5">
+                        <div key={i} className="w-1/6 xs:w-1/5 lg:w-1/12 mx-5 hover:cursor-pointer">
                             <ShelfDisplay book={book} />
                         </div>
                     ))}

@@ -30,7 +30,7 @@ const ShelfDisplay = ({ book }) => {
             onClick={directToNote}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="flex flex-col items-center w-full"
+            className="flex flex-col items-center w-full transition-transform duration-300 hover:scale-110"
         >
             <img
                 src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}

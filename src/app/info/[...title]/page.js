@@ -30,9 +30,9 @@ const BookInfo = ({ params }) => {
         if (isEditing) {
             try {
                 await axios.put(
-                    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/books?title=${encodeURIComponent(
-                        title
-                    )}`,
+                    `${
+                        process.env.NEXT_PUBLIC_NEXTAUTH_URL
+                    }/api/books?title=${encodeURIComponent(title)}`,
                     book
                 );
                 alert("Success!");
@@ -49,9 +49,13 @@ const BookInfo = ({ params }) => {
         setBook({ ...book, [name]: value });
     };
 
-    const deleteNote = async (event) => {
-        event.preventDefault();
+  const deleteNote = async (event) => {
+    event.preventDefault();
 
+    const userConfirmed = window.confirm(
+      "Are you sure you want to delete?"
+    );
+    if (userConfirmed) {
         try {
             const response = await axios.delete(
                 `${
@@ -64,12 +68,15 @@ const BookInfo = ({ params }) => {
                 } else {
                     router.push("/shelf");
                 }
-            } else {
             }
         } catch (error) {
             console.error("An error occurred:", error);
+            alert("An error occurred while deleting the note.");
         }
-    };
+    } else {
+        console.log("Note deletion was canceled by the user.");
+    }
+  }
 
     const exitNote = () => {
         if (book.category === "tbr") {
@@ -89,18 +96,20 @@ const BookInfo = ({ params }) => {
                         alt={`${book.title} book cover`}
                     />
                 </div>
-                <form className="relative flex flex-col  w-3/4  mx-auto lg:w-1/2">
-                    <h2 className="text-3xl italic">{book.title}</h2>
-                    <p className="text-lg">by {book.author}</p>
-                    <i
-                        onClick={exitNote}
-                        className="fa fa-times text-slate-700 text-xl py-1 border-2 hover:text-black  bg-slate-300
+                <form className="flex flex-col  w-3/4  mx-auto lg:w-1/2">
+                    <div className="flex justify-between">
+                        <h2 className="text-3xl italic">{book.title}</h2>
+                        <i
+                            onClick={exitNote}
+                            className="fa fa-times text-slate-700 text-xl py-1 border-2 hover:text-black  bg-slate-300 h-fit
 
                         active:bg-slate-200
                         active:border-2 active:border-slate-400
-                        rounded-full px-2 absolute top-0 end-0 m-2"
-                        aria-hidden="true"
-                    ></i>
+                        rounded-full px-2 m-2"
+                            aria-hidden="true"
+                        ></i>
+                    </div>
+                    <p className="text-lg">by {book.author}</p>
                     <div className="flex flex-col">
                         <label htmlFor="review" className="text-xl">
                             review:
