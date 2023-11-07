@@ -84,7 +84,7 @@ const Shelf = () => {
                         <select
                             name="shelf-filter"
                             id="shelf-filter"
-                            className="bg-transparent font-medium italic pr-5"
+                            className="bg-transparent font-medium italic pr-5 text-right"
                             onChange={handleFilterChange}
                         >
                             <option value="recent">Recently Added</option>
@@ -97,7 +97,7 @@ const Shelf = () => {
                     {filteredBooks.map((book, i) => (
                         <div
                             key={book.id || i}
-                            className="w-1/5 lg:w-1/12 mx-2 hover:cursor-pointer"
+                            className="w-1/5 lg:w-1/12 mx-2"
                         >
                             <ShelfDisplay book={book} />
                         </div>

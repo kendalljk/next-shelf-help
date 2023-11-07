@@ -30,14 +30,17 @@ const ShelfDisplay = ({ book }) => {
             onClick={directToNote}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="flex flex-col items-center w-full transition-transform duration-300 hover:scale-110 py-2"
+            className="flex flex-col items-center w-full transition-transform duration-300 hover:scale-110 py-2 hover:cursor-pointer"
         >
-            <img className="w-36 h-44"
-                src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
+            <img
+                className="w-36 h-44"
+                src={`http://covers.openlibrary.org/b/id/${book.cover}-M.jpg`}
                 alt={`${book.title} cover`}
             />
             <div className="w-full">
-          <h4 className="text-center text-lg truncate hover:overflow-visible hover:flex hover:flex-wrap hover:text-center hover:whitespace-normal">{book.title}</h4>
+                <h4 className="text-center text-lg truncate hover:overflow-visible hover:flex hover:flex-wrap hover:text-center hover:whitespace-normal">
+                    {book.title}
+                </h4>
             </div>
         </div>
     );

@@ -30,10 +30,10 @@ const TBR = () => {
     return (
         <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
             <div className="flex flex-col w-full">
-                <h2 className="text-2xl italic text-blue-300 m-5">
+                <h2 className="text-2xl italic text-blue-300 pl-5">
                     To be read...
                 </h2>
-                <div className="flex flex-wrap w-full px-5">
+                <div className="flex flex-wrap w-full pl-5">
                     {tbrBooks.map((book, i) => (
                         <div key={i} className="w-1/5 lg:w-1/12 mx-2">
                             <ShelfDisplay book={book} />

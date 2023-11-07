@@ -10,28 +10,36 @@ const Search = ({ params }) => {
     const [inputValue, setInputValue] = useState("");
     const [searchValue, setSearchValue] = useState("");
     const [books, setBooks] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const isFirstPage = currentPage === 1
 
     useEffect(() => {
         if (query) {
-            searchForBooks(decodeURIComponent(query), searchType);
+            searchForBooks(decodeURIComponent(query), searchType, currentPage);
             setSearchValue(decodeURIComponent(query));
         }
-    }, [query, searchType]);
+    }, [query, searchType, currentPage]);
 
-    const searchForBooks = async (searchQuery, type) => {
-        setBooks([]);;
+    const searchForBooks = async (
+        searchQuery,
+        type,
+        currentPage,
+        limit = 20
+    ) => {
+        setBooks([]);
 
         let apiUrl;
 
         if (type === "both") {
-            apiUrl = `https://openlibrary.org/search.json?q=${searchQuery}`;
+            apiUrl = `https://openlibrary.org/search.json?q=${searchQuery}&page=${currentPage}&limit=${limit}`;
         } else {
-            apiUrl = `https://openlibrary.org/search.json?${type}=${searchQuery}`;
+            apiUrl = `https://openlibrary.org/search.json?${type}=${searchQuery}&page=${currentPage}&limit=${limit}`;
         }
 
         try {
             const response = await fetch(apiUrl);
             const data = await response.json();
+            console.log("data: ", data);
             const booksData = data.docs.map((doc) => ({
                 author: doc.author_name ? doc.author_name[0] : "Unknown",
                 title: doc.title,
@@ -44,6 +52,14 @@ const Search = ({ params }) => {
         } catch (err) {
             console.error("Failed to fetch data:", err);
         }
+    };
+
+    const goToNextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const goToPreviousPage = () => {
+        setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
     };
 
     const handleSubmit = (e) => {
@@ -128,7 +144,33 @@ const Search = ({ params }) => {
                     </button>
                 </div>
             </form>
-            {books && <SearchDisplay books={books} searchValue={searchValue} />}
+            {books && (
+                <>
+                    <SearchDisplay books={books} searchValue={searchValue} />
+                    <div className="flex gap-20 pt-5 text-blue-300">
+                        <button
+                            onClick={() =>
+                                goToPreviousPage(searchValue, searchType)
+                            }
+                            disabled={isFirstPage}
+                            className={`${
+                                isFirstPage
+                                    ? "text-gray-300 cursor-not-allowed"
+                                    : "hover:text-blue-500 text-blue-300"
+                            }`}
+                        >
+                            <i className="fa-solid fa-arrow-left text-2xl"></i>
+                        </button>
+                        <button
+                            onClick={() =>
+                                goToNextPage(searchValue, searchType)
+                            }
+                        >
+                            <i className="fa-solid fa-arrow-right text-2xl hover:text-blue-500"></i>
+                        </button>
+                    </div>
+                </>
+            )}
         </section>
     );
 };
