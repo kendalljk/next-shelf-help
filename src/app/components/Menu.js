@@ -6,7 +6,14 @@ import { signOut, signIn, useSession } from "next-auth/react";
 const Menu = () => {
     const router = useRouter();
     const { data: session } = useSession();
-    const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+    const firstName = () => {
+        if (session.user) {
+            return session.user.fullName.split(" ")[0];
+        }
+        console.log(firstName());
+    };
 
     const navToSignIn = (e) => {
         e.preventDefault();
@@ -34,7 +41,7 @@ const Menu = () => {
                 >
                     {session?.user && (
                         <div className="text-right text-blue-400 text-xl">
-                            <h2>{session.user.fullName}</h2>
+                <h2>{`${firstName()}'s Library`}</h2>
                         </div>
                     )}
                     <Link

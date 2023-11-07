@@ -29,6 +29,7 @@ export default function Home() {
             <img
               src="/landingImage.png"
               className="hidden md:flex max-w-lg"
+              alt="Faded landing Image of a bookshelf lined with books"
             />
           </div>
           <div className="self-center flex flex-col items-start lg:w-1/2">

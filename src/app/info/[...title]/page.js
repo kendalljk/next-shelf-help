@@ -25,7 +25,7 @@ const BookInfo = ({ params }) => {
         };
 
         fetchData();
-    }, []);
+    }, [title]);
 
     const handleEdit = async () => {
         if (isEditing) {

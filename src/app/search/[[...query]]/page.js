@@ -144,7 +144,7 @@ const Search = ({ params }) => {
                     </button>
                 </div>
             </form>
-            {books && (
+            {books.length > 0 && (
                 <>
                     <SearchDisplay books={books} searchValue={searchValue} />
                     <div className="flex gap-20 pt-5 text-blue-300">
