@@ -53,7 +53,7 @@ const Shelf = () => {
     const filteredBooks = sortedBooks(readBooks, filter);
 
     return (
-        <section className="flex min-h-screen w-full flex-col items-center bg-pages pt-24">
+        <section className="flex min-h-screen w-full flex-col items-center bg-pages bg-fixed pt-24">
             <div className="flex flex-col w-full">
                 <h2 className="text-2xl italic text-blue-300 pl-5">
                     Currently reading...

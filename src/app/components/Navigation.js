@@ -18,7 +18,7 @@ function Navigation() {
     };
 
     return (
-        <div className="absolute top-0 flex w-full justify-between bg-pages">
+        <div className="absolute top-0 flex w-full justify-between bg-pages bg-fixed">
             <div className="flex items-center">
                 <Link href="/">
                     <img

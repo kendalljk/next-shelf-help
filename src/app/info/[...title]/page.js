@@ -100,7 +100,7 @@ const addRating = (rate) => {
     };
 
     return (
-        <section className="flex min-h-screen w-full justify-center gap-20 bg-pages pt-24 bg-repeat-y">
+        <section className="flex min-h-screen w-full justify-center gap-20 bg-pages bg-fixed pt-24 bg-repeat-y">
             <div className="w-full lg:w-3/4 flex flex-col lg:flex-row lg:justify-center gap-10">
                 <div className="w-full flex lg:w-1/2  justify-center">
                     <img

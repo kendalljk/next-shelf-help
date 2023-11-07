@@ -10,8 +10,8 @@ const Search = ({ params }) => {
     const [inputValue, setInputValue] = useState("");
     const [searchValue, setSearchValue] = useState("");
     const [books, setBooks] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const isFirstPage = currentPage === 1
+    const [currentPage, setCurrentPage] = useState(1);
+    const isFirstPage = currentPage === 1;
 
     useEffect(() => {
         if (query) {
@@ -26,32 +26,58 @@ const Search = ({ params }) => {
         currentPage,
         limit = 20
     ) => {
-        setBooks([]);
+        let fetchedBooks = [];
+        let hasMore = true;
+        let page = currentPage;
 
-        let apiUrl;
+        while (fetchedBooks.length < limit && hasMore) {
+            let apiUrl;
 
-        if (type === "both") {
-            apiUrl = `https://openlibrary.org/search.json?q=${searchQuery}&page=${currentPage}&limit=${limit}`;
-        } else {
-            apiUrl = `https://openlibrary.org/search.json?${type}=${searchQuery}&page=${currentPage}&limit=${limit}`;
+            if (type === "both") {
+                apiUrl = `https://openlibrary.org/search.json?q=${encodeURIComponent(
+                    searchQuery
+                )}&page=${page}&limit=${limit}`;
+            } else {
+                apiUrl = `https://openlibrary.org/search.json?${type}=${encodeURIComponent(
+                    searchQuery
+                )}&page=${page}&limit=${limit}`;
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                console.log("data: ", data);
+
+                if (data.docs.length === 0) {
+                    hasMore = false;
+                    break;
+                }
+
+                const booksWithCovers = data.docs
+                    .filter((doc) => doc.cover_i)
+                    .map((doc) => ({
+                        author: doc.author_name
+                            ? doc.author_name[0]
+                            : "Unknown",
+                        title: doc.title,
+                        coverI: doc.cover_i,
+                    }));
+
+                fetchedBooks = [...fetchedBooks, ...booksWithCovers];
+
+                if (fetchedBooks.length > limit) {
+                    fetchedBooks = fetchedBooks.slice(0, limit);
+                    break;
+                }
+
+                page += 1;
+            } catch (err) {
+                console.error("Failed to fetch data:", err);
+                break;
+            }
         }
 
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            console.log("data: ", data);
-            const booksData = data.docs.map((doc) => ({
-                author: doc.author_name ? doc.author_name[0] : "Unknown",
-                title: doc.title,
-                coverI: doc.cover_i,
-            }));
-
-            const booksWithCovers = booksData.filter((book) => book.coverI);
-
-            setBooks(booksWithCovers);
-        } catch (err) {
-            console.error("Failed to fetch data:", err);
-        }
+        setBooks(fetchedBooks);
     };
 
     const goToNextPage = () => {
@@ -60,7 +86,15 @@ const Search = ({ params }) => {
 
     const goToPreviousPage = () => {
         setCurrentPage((prevPage) => (prevPage > 1 ? prevPage - 1 : prevPage));
-    };
+  };
+
+useEffect(() => {
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+    });
+}, [currentPage]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -69,7 +103,7 @@ const Search = ({ params }) => {
     };
 
     return (
-        <section className="flex min-h-screen w-full flex-col items-center bg-pages pb-5">
+        <section className="flex min-h-screen w-full h-full flex-col items-center bg-pages bg-fixed pb-5">
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col w-2/3 md:w-1/3 pt-24"
