@@ -74,20 +74,20 @@ const Shelf = () => {
                     <h2 className="text-2xl italic text-blue-300 pl-5">
                         On the shelf...
                     </h2>
-                    <div className="flex mx-12">
+                    <div className="flex mx-12 items-center">
                         <label
                             htmlFor="shelf-filter"
                             className="text-2xl italic text-blue-300"
                         >
-                            <h2 className="hidden lg:inline">Filter:</h2>
+                            <h2 className="hidden lg:inline pr-2">Filter:</h2>
                         </label>
                         <select
                             name="shelf-filter"
                             id="shelf-filter"
-                            className="bg-transparent font-medium italic pr-5 text-right"
+                            className="bg-transparent font-medium text-right pr-5 "
                             onChange={handleFilterChange}
                         >
-                            <option value="recent">Recently Added</option>
+                            <option value="recent" >Recently Added</option>
                             <option value="alphabetical">Alphabetically</option>
                             <option value="rating">Rating</option>
                         </select>
