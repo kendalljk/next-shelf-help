@@ -38,7 +38,7 @@ const ShelfDisplay = ({ book }) => {
                 alt={`${book.title} cover`}
             />
             <div className="w-full">
-                <h4 className="text-center text-lg truncate hover:overflow-visible hover:flex hover:flex-wrap hover:text-center hover:whitespace-normal">
+                <h4 className="text-center text-lg truncate hover:overflow-visible hover:text-center hover:whitespace-normal">
                     {book.title}
                 </h4>
             </div>

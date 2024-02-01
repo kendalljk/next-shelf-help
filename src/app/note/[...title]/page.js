@@ -44,19 +44,19 @@ const NotePage = ({ params }) => {
         }));
     };
 
-const addRating = (rate) => {
-    const numRate = Number(rate);
-    setRating(numRate);
-    setMyNote((prevState) => ({
-        ...prevState,
-        rating: numRate,
-    }));
-    console.log("My note with rating: ", myNote);
-};
+    const addRating = (rate) => {
+        const numRate = Number(rate);
+        setRating(numRate);
+        setMyNote((prevState) => ({
+            ...prevState,
+            rating: numRate,
+        }));
+        console.log("My note with rating: ", myNote);
+    };
 
     const saveNote = async (event) => {
-      event.preventDefault();
-      console.log("updated note: ", myNote)
+        event.preventDefault();
+        console.log("updated note: ", myNote);
 
         try {
             const checkDuplicates = await axios.get(
@@ -74,7 +74,6 @@ const addRating = (rate) => {
                     checkDuplicates.data.quotes === myNote.quotes &&
                     checkDuplicates.data.review === myNote.review
                 ) {
-                    router.push("/shelf");
                     return;
                 } else {
                     const updateResponse = await axios.put(
@@ -83,13 +82,12 @@ const addRating = (rate) => {
                         }/api/books?title=${encodeURIComponent(myNote.title)}`,
                         myNote
                     );
-                    if (updateResponse.status === 200) {
-                        router.push("/shelf");
-                    } else {
+                  if (updateResponse.status === 200) {
+                      alert("Success")
+                      console.log("Successfully updated note")
                     }
                     return;
                 }
-            } else {
             }
 
             const response = await axios.post(
@@ -99,7 +97,6 @@ const addRating = (rate) => {
         } catch (error) {
             console.error("An error occurred:", error);
         }
-        router.push("/shelf");
     };
 
     const deleteNote = async (event) => {
@@ -168,9 +165,7 @@ const addRating = (rate) => {
                             ></i>
                         </div>
                         <p className="text-lg">by {book.author}</p>
-                        <div
-                            className="flex gap-5 py-2 text-blue-200"
-                        >
+                        <div className="flex gap-5 py-2 text-blue-200">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <i
                                     key={star}
