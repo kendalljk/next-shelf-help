@@ -37,7 +37,6 @@ const BookInfo = ({ params }) => {
                     book
                 );
                 alert("Success!");
-                router.push("/shelf");
             } catch (error) {
                 console.error("An error occurred while updating data: ", error);
             }
@@ -104,7 +103,7 @@ const addRating = (rate) => {
             <div className="w-full lg:w-3/4 flex flex-col lg:flex-row lg:justify-center gap-10">
                 <div className="w-full flex lg:w-1/2  justify-center">
                     <img
-                        className="w-2/3 lg:w-4/5 h-fit"
+                        className="w-2/3 h-fit"
                         src={`http://covers.openlibrary.org/b/id/${book.cover}-L.jpg`}
                         alt={`${book.title} book cover`}
                     />
